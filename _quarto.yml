@@ -11,10 +11,10 @@ website:
 
   page-footer: 
     border: true
-    left: "Your_Name 2024©"
+    left: "Kayson Garn 2026©"
     right: 
       - icon: linkedin
-        href: Your_LinkedIn_URL
+        href: https://www.linkedin.com/in/kayson-garn-940087331/
 
   navbar:
     background: primary
@@ -37,7 +37,7 @@ website:
       - text: "Competitions"
         file: competition.qmd
   
-  # learn more about navication here https://quarto.org/docs/websites/website-navigation.html
+  # learn more about navigation here https://quarto.org/docs/websites/website-navigation.html
   # comment out any of the sections below to turn off the sidebar
 
   sidebar: 
