@@ -1,0 +1,782 @@
+---
+title: "w09_task1"
+format: html
+---
+
+# Student Approved Housing Data Analysis 
+
+```{r}
+#| message: false
+#| warning: false
+#| include: false
+#to load neccessary libraries
+library(tidyverse)
+library(mosaic)
+library(pander)
+library(dplyr)
+library(stringr)
+library(margins)
+library(scales)
+library(rio)
+library(plotly)
+```
+
+```{r}
+#loading the occupancy data
+
+occupancy_data <- rio::import("C:\\Users\\kayso\\OneDrive\\Desktop\\BYUI\\Econ Society\\Old Sources\\Clean Part 1\\master_occ_price_management.csv")
+```
+
+```{r}
+survey_responses <- rio::import("C:\\Users\\kayso\\OneDrive\\Desktop\\BYUI\\Econ Society\\Old Sources\\Clean Part 1\\master_survey.csv")
+```
+
+## Student Approved Housing Overview
+
+BYU–Idaho operates a student-approved housing system designed to support its mission of developing disciple leaders. As part of this model, students must live in approved housing, making the availability, quality, and affordability of these units essential to the student experience. Recent policy adjustments and shifts in admissions trends have raised new questions for current and prospective property developers. This analysis provides a concise overview of the housing landscape in Rexburg, offering data-driven insights to help investors better understand risks, opportunities, and expected market conditions.
+
+## Data Integration & Refinement: The Cleaning Process
+
+To build a comprehensive view of the BYU-Idaho housing landscape, I integrated three distinct data streams: **Occupancy Rates** (0–100%), **Student Surveys** (1–5 scale metrics), and **Contract Pricing**. The primary challenge in this integration was the survey data’s staggered collection schedule, where only one-third of complexes are surveyed each semester.
+
+To ensure a proper analysis despite these gaps, I implemented a multi-stage cleaning and "backfilling" workflow:
+
+### 1. The Initial Join and Gap Analysis
+
+I began by joining the occupancy and pricing data with the available survey responses. By filtering for NA values in metrics like **Cleanliness**, I was able to determine which property-semester combinations lacked survey results.
+
+### 2. Logical Backfilling
+
+To resolve the missing data, I created a custom logic function, choose_best_semester. Since student sentiment often carries over from the most recent period, this function prioritized the "best available" match.
+
+-   **The Strategy:** If a specific semester (e.g., Winter) was missing survey data, the script searched for and pulled the most relevant data from the adjacent semesters (Fall or Spring) within the same year.
+
+-   **Priority Logic:**
+
+    ```{r}
+    priority_table <- data.frame(
+      Missing_Semester = c("Winter (WI)", "Spring (SP)", "Fall (FA)"),
+      Priority_1 = c("Fall (FA)", "Fall (FA)", "Winter (WI)"),
+      Priority_2 = c("Spring (SP)", "Winter (WI)", "Spring (SP)")
+    )
+
+    # Display the table
+    pander(priority_table)
+    ```
+
+### 3. Data Coalescing and Schema Finalization
+
+Once the "best match" was identified, I used a coalesce operation to merge the alternate survey data into the master set to "fill the holes" while keeping the primary data intact. I then standardized the column names and removed redundant "join-helper" columns to create a clean master file titled HSL_data.
+
+### 4. Occupancy Organization
+
+To better categorize property performance, I added a binary occupancy indicator (boolocc). This classifies any complex with an occupancy rate of 95% or higher as a "1" (effectively full), allowing for a better comparison between high-demand properties and those with major vacancies.
+
+```{r}
+#now I want to join the price/occupancy and survey results datasets 
+
+full_master1 <- occupancy_data %>%
+  left_join(survey_responses, by = c("Semester", "Year", "Property"), keep = TRUE)
+```
+
+```{r}
+#what data is missing from the survey?
+missing_info <- full_master1 %>%
+  filter(is.na(Cleanliness))
+```
+
+```{r}
+#to create an aleternate survey dataset to do a second merge to catch the semesters we did not get surveys for (we want the survey semesters to be as close to the real semester for the occupancy and price results as possible.)
+
+survey_alt <- survey_responses %>%
+  rename(Survey_Semester = Semester)
+
+
+
+missing_filled <- missing_info %>%
+  left_join(survey_alt, by = c("Property.x" = "Property", "Year.x"="Year"), suffix = c("", "_alt"))
+
+#we want the many to many relationship so that we can 'choose' the "best" semester.
+```
+
+```{r}
+#Choose the best semester by logic
+
+choose_best_semester <- function(survey_sem, desired_sem) {
+
+  prefs <- list(
+    WI = c("FA", "SP"),
+    SP = c("FA", "WI"),
+    FA = c("WI", "SP")
+  )
+
+  survey_sem %in% prefs[[desired_sem]]
+}
+
+
+missing_best <- missing_filled %>%
+  rowwise() %>%
+  mutate(is_best = choose_best_semester(Survey_Semester, Semester.x)) %>%
+  ungroup() %>%
+  filter(is_best) %>%
+  distinct(Property.x, Semester.x, Year.x, .keep_all = TRUE)
+```
+
+```{r}
+#keep matched rows from the original join
+
+matched <- full_master1 %>%
+  filter(!is.na(Cleanliness))
+```
+
+```{r}
+#combined matched + backfilled
+
+final_master <- bind_rows(matched, missing_best) %>%
+  select(-is_best)
+
+```
+
+```{r}
+#fix duplicate "_alt" columns
+
+alt_cols <- names(final_master)[str_detect(names(final_master), "_alt$")]
+
+for (alt_col in alt_cols) {
+
+  base_col <- str_remove(alt_col, "_alt")
+
+  final_master[[base_col]] <- coalesce(
+    final_master[[base_col]],
+    final_master[[alt_col]]
+  )
+}
+
+final_master <- final_master %>%
+  select(-all_of(alt_cols)) %>%
+  select(-Survey_Semester)
+```
+
+```{r}
+HSL_data <- final_master |> 
+  select(Semester.x, Year.x, Property.x, Total_Beds, `#Occ`, Empty_Beds,  Occ_Rate, Mean_Contract_Price, Management_Name, Gender, Management, Maintenance_Response, Cleanliness, Activities_Events, Internet, Culture, Value,  Overall, n_responses) |> 
+  rename(Semester = Semester.x, Year= Year.x, Property = Property.x, X.Occ = `#Occ`)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| include: false
+#to include a binary column, occupancy rate of .95 or greater == 1, .949 or less == 0.
+
+HSL_data <- HSL_data |> 
+  mutate(
+    boolocc = ifelse(
+      Occ_Rate >= .95, 1, 0
+    )
+  )
+```
+
+| Column Name          | Description                                      |
+|----------------------|--------------------------------------------------|
+| Semester             | Winter or Spring semesters.                      |
+| Year                 | Academic year (2022–2025).                       |
+| Property             | Name of the student-approved housing property.   |
+| Total_Beds           | Total number of beds at the property.            |
+| X.Occ                | Number of beds currently occupied.               |
+| Empty_Beds           | Number of beds unoccupied.                       |
+| Occ_Rate             | Occupancy rate of the property.                  |
+| Mean_Contract_Price  | Mean contract price across all floor plans.      |
+| Management_Name      | Management company for the property.             |
+| Gender               | Gender the property is approved for (Men/Women). |
+| Management           | Average management survey score (1–5).           |
+| Maintenance_Response | Average maintenance response score (1–5).        |
+| Cleanliness          | Average cleanliness score (1–5).                 |
+| Activities_Events    | Average activities & events score (1–5).         |
+| Internet             | Average internet satisfaction score (1–5).       |
+| Culture              | Average culture score (1–5).                     |
+| Value                | Average value rating (1–5).                      |
+| Overall              | Overall satisfaction rating (1–5).               |
+|                      |                                                  |
+
+```{r}
+#to create an additional columns creating a boolean variable for occupancy 1=completely full, 0= not completely full
+
+HSL_data <- HSL_data |> 
+  mutate(Full_Occ = Occ_Rate == 1.00)
+
+HSL_data <- HSL_data |>
+  mutate(
+    Management_Name = recode(
+      Management_Name,
+      "Ball Venture" = "Ball Ventures",
+    )
+  )
+```
+
+```{r}
+#| eval: false
+#| message: false
+#| warning: false
+#| include: false
+#to understand the connection between values ratings and price by semester:
+bw_value = (
+  ggplot(HSL_data, aes(x= Mean_Contract_Price, y= Value))
+               + geom_point()
+               + geom_smooth(method = "lm", se = FALSE, color="firebrick")
+               + labs(
+                 title="BYU-I Survey Responses and Pricing Data (2022-2025)",
+                 x="Mean Contract Pricing in $USD",
+                 y="Value Rating (1-5)"
+               )
+               + theme_bw())
+
+
+bw_value
+```
+
+# Occupancy Rates
+
+Has occupancy rates increased on average over the last 3 years?
+
+```{r}
+#| message: false
+#| warning: false
+HSL_years_grouped <- HSL_data |> 
+  group_by(Semester, Year) |> 
+  summarise(
+    mean_price = mean(Mean_Contract_Price),
+    median_occ = median(Occ_Rate) * 100
+  ) |> 
+  mutate(
+    Semester = case_when(
+      Semester == "SP" ~ "Spring",
+      Semester == "WI" ~ "Winter"
+    )
+  )
+
+chart_occupancy <- ggplot(HSL_years_grouped, aes(x = Year, y = median_occ)) +
+  geom_bar(stat = "identity", fill="#006EB6") + 
+  facet_grid(~Semester) + 
+  scale_y_continuous(
+    breaks = seq(0, 100, by = 10),
+    labels = function(x) paste0(x, "%"),
+    limits = c(0, 100)
+  ) +
+  theme_minimal() + 
+  labs(
+    title = "Median Occupancy Rate in Student Approved Housing (2022–2025)",
+    x = "",
+    y = "Occupancy Rate"
+  ) + 
+  theme(
+    panel.grid.major.x = element_blank(),
+  )
+
+chart_occupancy
+```
+
+Despite the overall growth in the student body, this analysis reveals an increasing seasonal volatility in the housing market. While Winter occupancy has trended upward from 2022 to 2025, Spring occupancy has seen a sharp decline, dropping by more than 10% between 2022 and 2025. This divergence indicates that the demand for Student Approved Housing is becoming more cyclical, creating a widening 'occupancy gap' that investors must account for when calculating annual returns.
+
+# Market Trend Aggregation & Transformation
+
+To identify the drivers behind the \>10% occupancy shift, I transitioned the data set from the individual apartment complex level to an aggregated market summary (`HSL_years_high_occ_grouped`). This cleaning step focuses on two goals: ensuring statistical integrity and making the data understandable for final reporting.
+
+### 1. Integrity Filtering
+
+I began by removing any records where survey results were still missing. This ensures that the subsequent means for maintenance, culture, and value are based on actual resident feedback rather than being skewed by zero-values or empty entries.
+
+### 2. Multi-Metric Summarization
+
+I condensed the dataset by grouping it by **Semester**, **Year**, and **Occupancy Status** (Full_Occ). For each group, I calculated a suite of performance averages:
+
+-   Mean contract pricing.
+
+-   Mean bed counts to see if complex size impacts occupancy.
+
+-   Average scores across all survey categories (Cleanliness, Management, Culture, etc.) to pinpoint which "soft" factors correlate with high occupancy.
+
+### 3. Scaling and Labeling for Clarity
+
+To ensure the final outputs are intuitive I applied two final transformations:
+
+-   **Occupancy Scaling:** Converted the Occ_Rate decimal into a standard percentage(0-100).
+
+-   **Human-Readable Labels:** Used a case_when logical check to transform internal codes (SP, WI) into their full titles (**"Spring"**, **"Winter"**) for clarity.
+
+```{r}
+HSL_years_high_occ_grouped <- HSL_data |> 
+  filter(!is.na(Cleanliness)) |> 
+  group_by(Semester, Year, Full_Occ) |> 
+  summarise(
+    mean_price = mean(Mean_Contract_Price),
+    median_occ = median(Occ_Rate) * 100,
+    mean_beds = mean(Total_Beds),
+    mean_management = mean(Management),
+    mean_maintenance = mean(Maintenance_Response),
+    mean_cleanliness = mean(Cleanliness),
+    mean_activities = mean(Activities_Events),
+    mean_culture = mean(Culture),
+    mean_value = mean(Value),
+    mean_overall = mean(Overall)
+  ) |> 
+  mutate(
+    Semester = case_when(
+      Semester == "SP" ~ "Spring",
+      Semester == "WI" ~ "Winter"
+    )
+  )
+```
+
+```{r}
+#| message: false
+#| warning: false
+price_chart <- ggplot(HSL_years_high_occ_grouped, 
+                      aes(x = Year, y = mean_price, color = Full_Occ)) + 
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6",
+      "FALSE" = "#949598" 
+    )
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Price",
+    color = "Full Occupancy"
+  )
+
+ggplotly(price_chart)
+```
+
+```{r}
+#to filter for Spring semester only
+spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester == "Spring", ]
+
+#to run the ANOVA test
+anova_result <- aov(mean_price ~ Full_Occ, data = spring_data)
+
+summary(anova_result)
+print("The differences in the mean price between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.05 (p ≈ 0.0355)")
+```
+
+**Market Dynamics and the "Shift to Quality" in Student Approved Housing**
+
+The BYU-Idaho Housing market is currently defined by a cyclical demand between semester, in this the gap between Winter and Spring occupancy is widening. During the Fall and Winter semesters, the market operates at full capacity, where nearly all available beds are absorbed. In this high demand environment the lower quality properties, "Tier 2 and 3" properties can maintain high occupancy rates. This happens because once the "Tier 1" properties have reached full occupancy, the remaining demand is forced to "less desirable" complexes. Once this occurs the remaining complexes stop competing on merit or value but instead capture the rest of the market.
+
+On the other hand, the Spring semester represents a buyer's market which is characterized by surplus of supply (contracts/beds). When students have the luxury of choice, we observe a shift of demand to quality. Interestingly, data shows that complexes maintaining full occupancy during this period often have higher prices than their vacant competitors. This indicates that students have low price sensitivity when it comes to "soft" factors such as management, cleanliness, and culture. Rather than a "race to the bottom" on pricing, the Spring market rewards product differentiation. For investors, this suggests that higher quality assets offer increased seasonal stability when it comes to occupancy rates since students tend to secure "first-choice status during seasonal contractions, while budget focused properties tend to be vulnerable to revenue volatility during these same seasonal contractions.
+
+```{r}
+#| message: false
+#| warning: false
+occ_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=median_occ, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6",
+      "FALSE" = "#949598" 
+    )) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Occupancy",
+    color = "Full Occupancy"
+  )
+
+ggplotly(occ_chart)
+```
+
+```{r}
+#to filter for Spring semester only
+spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester == "Spring", ]
+
+#to run the ANOVA test
+anova_result <- aov(median_occ ~ Full_Occ, data = spring_data)
+
+summary(anova_result)
+print("The differences in the median occupancy between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.01 (p ≈ 0.0000...)")
+```
+
+**Market Volatility and the Widening Seasonal Gap**
+
+An analysis of occupancy trends between 2022 and 2025 reveals an inverse relationship between Winter and Spring semesters. The data confirms a significant shift in the demand curve for student housing, as the student populations increasingly clusters in the Fall and Winter semesters. Over the four year period depicted above, the "Tier 2 and 3" properties saw a 10% decline in Spring occupancy, while Winter occupancy increased by approximately 9%. Rather than a steady stream of revenue year-round, the student housing market is cyclical which creates a higher risk environment for investors who must subsidize Spring losses with Winter gains.
+
+To mitigate seasonal contraction and stabilize the market's cyclical occupancy rates, I propose the following recommendations aimed at "smoothing" the demand across semesters offered at BYU-Idaho.
+
+-   **Strict Track Enforcement:** Regulating student track assignments would artificially shift demand, forcing a portion of the Winter/Fall students into the Spring semester to balance occupancy across the three semesters.
+
+-   **Calendar Optimization:** Shifting the academic calendar one in which the Fall occurs during the August to November months, the Winter occurs during the November to February months and the Spring Semester which occurs during the March to June months, could make the Spring term more advantageous for students who are accustomed to looking for and finding summer jobs. This in turn may aid in reducing the current seasonal reduction during the Spring semester.
+
+-   **Structural Track Reform:** Transitioning to a two-track system with extended 14-week semesters and supplemental spring/summer sessions would lengthen the periods of peak occupancy, allowing complexes to maintain 90–100% occupancy for a greater portion of the year.
+
+-   **Deregulation of Housing Requirements:** Transitioning to a model where only freshmen are required to live in "Approved Housing" (such as Centre Square) before moving to "Community Housing" would allow the market to reach its own natural equilibrium. This would force lower-performing complexes to either innovate through capital improvements or exit the student market entirely.
+
+```{r}
+#| message: false
+#| warning: false
+bedcount_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=mean_beds, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6",
+      "FALSE" = "#949598" 
+    )) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Total Beds",
+    color = "Full Occupancy"
+  )
+
+ggplotly(bedcount_chart)
+```
+
+```{r}
+#to filter for Spring semester only
+spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester == "Spring", ]
+
+#to run the ANOVA test
+anova_result <- aov(mean_beds ~ Full_Occ, data = spring_data)
+
+summary(anova_result)
+print("The differences in the mean beds between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.01 (p ≈ 0.00319)")
+```
+
+#### Contract Density and Efficiency of Scale
+
+An analysis of contract density across both Winter and Spring semesters demonstrates that as a property's total bed count increases it's ability to reach full occupancy decreases. Smaller and mid-sized apartment complexes consistently outperform the larger complexes in achieving full occupancy. This suggests that as a properties bed count increases, the marginal effort required to sell each contract grow disproportionately and therefore face higher costs to acquire each additional resident contract.
+
+For investors, this highlights the idea that there is significant operational friction associated with higher-density builds. While complexes benefit from economies of scale in construction and maintenance they do suffer from leasing "dilution" during seasons of contraction (a.k.a Spring). A higher bed count apartment complex requires a more aggressive marketing structure to reach full capacity as compared to a lower bed count apartment complex.
+
+For both the Winter and Spring semesters, apartment complexes with a lower mean total beds tend to reach full occupancy, while apartment complexes with higher mean total bed counts tend not reach full occupancy. This indicates that larger apartment complexes tend to have more of a difficult time selling contracts as compared to mid sized and smaller apartment complexes. Therefore, investors must consider the additional effort that it takes to reach full occupancy during the Spring and Winter semesters.
+
+```{r}
+#| message: false
+#| warning: false
+management_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=mean_management, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6", 
+      "FALSE" = "#949598"
+    )) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Management Rating (1-5)",
+    color = "Full Occupancy"
+  )
+
+ggplotly(management_chart)
+```
+
+Surprisingly, this analysis fails to observe a meaningful correlation between management ratings and occupancy rates across the Winter and Spring semesters. While one might expect better management to drive higher retention, the data suggests that there is some indifference among student's in this area. This indicates that while management quality is a "soft" factor that affects the resident experience, it does not necessarily drive demand.
+
+```{r}
+#| message: false
+#| warning: false
+maintenance_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=mean_maintenance, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6",
+      "FALSE" = "#949598" 
+    )) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Maintenance Rating (1-5)",
+    color = "Full Occupancy"
+  )
+
+ggplotly(maintenance_chart)
+```
+
+```{r}
+#to filter for Spring semester only
+spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester == "Spring", ]
+
+#to run the ANOVA test
+anova_result <- aov(mean_maintenance ~ Full_Occ, data = spring_data)
+
+
+summary(anova_result)
+print("The differences in the mean maintenance survey results between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.10 (p ≈ 0.07).")
+```
+
+This analysis reveals a decreasing gap between the maintenance ratings of fully occupied properties and those with vacancies during the Spring semester. This highlights that maintenance reliability acts as a driver of demand when the market has excess supply. This suggests that a reputation for prompt and effective maintenance provides a competitive advantage.
+
+In contrast, this correlation is not shown during the Winter semester. During high demand and supply constrained environments, the maintenance competitive advantage is effectively erased by the volume of the student population.
+
+```{r}
+#| message: false
+#| warning: false
+cleanliness_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=mean_cleanliness, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6", 
+      "FALSE" = "#949598" 
+    )) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Cleanliness Rating (1-5)",
+    color = "Full Occupancy"
+  )
+
+ggplotly(cleanliness_chart)
+```
+
+```{r}
+#to filter for Spring semester only
+spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester == "Spring", ]
+
+#to run the ANOVA test
+anova_result <- aov(mean_cleanliness ~ Full_Occ, data = spring_data)
+
+
+summary(anova_result)
+print("The differences in the mean cleanliness survey results between full and non-full apartment complexes in the Spring are not statistically significant at alpha = 0.10 (p ≈ 0.153)")
+```
+
+This analysis reveals a increasing gap between the cleanliness ratings of fully occupied properties and those with vacancies during the Spring semester. This highlights that overall complex cleanliness acts as a driver of demand when the market has excess supply. This suggests that a reputation for cleanliness provides a competitive advantage.
+
+In contrast, this correlation is not shown during the Winter semester. During high demand and supply constrained environments, the cleanliness competitive advantage is effectively erased by the volume of the student population.
+
+```{r}
+#| message: false
+#| warning: false
+activities_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=mean_activities, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6",
+      "FALSE" = "#949598"
+    )) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Activities Rating (1-5)",
+    color = "Full Occupancy"
+  )
+
+ggplotly(activities_chart)
+```
+
+```{r}
+#to filter for Spring semester only
+spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester == "Spring", ]
+
+#to run the ANOVA test
+anova_result <- aov(mean_activities ~ Full_Occ, data = spring_data)
+
+summary(anova_result)
+print("The differences in the mean activities survey results between full and non-full apartment complexes in the Spring are not statistically significant at alpha = 0.10, though the result approaches significance (p ≈ 0.11).")
+```
+
+This analysis fails to observe a meaningful correlation between activities ratings and occupancy rates across the Winter and Spring semesters. While one might expect better activites to drive higher retention, the data suggests that there is some indifference among student's in this area. This indicates that while activities is a "soft" factor that affects the resident experience, it does not necessarily drive demand. Therefore, we might conclude that investment in this area results in a less than expected return in the form of retention during period of seasonal contraction (a.k.a. Spring).
+
+```{r}
+#| message: false
+#| warning: false
+culture_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=mean_culture, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6", 
+      "FALSE" = "#949598" 
+    )) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Culture Rating (1-5)",
+    color = "Full Occupancy"
+  )
+
+ggplotly(culture_chart)
+```
+
+```{r}
+#to filter for Spring semester only
+spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester == "Spring", ]
+
+#to run the ANOVA test
+anova_result <- aov(mean_culture ~ Full_Occ, data = spring_data)
+
+summary(anova_result)
+print("The differences in the mean culture survey results between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.05 (p ≈ 0.015")
+```
+
+This analysis fails to observe a meaningful positive correlation between culture ratings and occupancy rates across the Winter and Spring semesters. While one might expect better culture to drive higher retention, the data suggests that lower culture ratings are associated with apartment complexes with apartment complexes that did not reach full occupancy during Spring semesters while no correlation is observed during the Winter semester. This indicates that while culture is a "soft" factor that affects the resident experience, it does not necessarily drive demand and and therefore is a low-reward "soft" factor to invest in.
+
+```{r}
+#| message: false
+#| warning: false
+value_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=mean_value, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6", 
+      "FALSE" = "#949598" 
+    )) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Value Rating (1-5)",
+    color = "Full Occupancy"
+  )
+
+ggplotly(value_chart)
+```
+
+```{r}
+#to filter for Spring semester only
+spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester == "Spring", ]
+
+#to run the ANOVA test
+anova_result <- aov(mean_value ~ Full_Occ, data = spring_data)
+
+summary(anova_result)
+print("The differences in the mean value survey results between full and non-full apartment complexes in the Spring are not statistically significant at alpha = 0.10 (p ≈ 0.207")
+```
+
+This analysis fails to observe a meaningful positive correlation between value ratings and occupancy rates across the Winter and Spring semesters. While one might expect better value ratings to drive higher retention, the data suggests that lower value ratings are associated with apartment complexes with apartment complexes that did not reach full occupancy during Spring semesters while no correlation is observed during the Winter semester. This indicates that while value is a "soft" factor that affects the resident experience, it does not necessarily drive demand and and therefore is a low-reward "soft" factor to invest in.
+
+```{r}
+#| message: false
+#| warning: false
+overall_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=mean_overall, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6",
+      "FALSE" = "#949598" 
+    )) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Overall Rating (1-5)",
+    color = "Full Occupancy"
+  )
+
+ggplotly(overall_chart)
+```
+
+Surprisingly, this analysis fails to observe a meaningful correlation between overall ratings and occupancy rates across the Winter and Spring semesters. While one might expect better overall ratings to drive higher retention, the data suggests that there is some indifference among student's in this area.
+
+## Findings and Recommendations
+
+An analysis of occupancy trends between 2022 and 2025 reveals an inverse relationship between Winter and Spring semesters. We also see an emerging trend where
+
+1.  The BYU-Idaho Housing market is currently defined by a cyclical demand between semester, in this the gap between Winter and Spring occupancy is widening.
+2.  Tier 2 and 3 properties can maintain high-occupancy rates during the Winter and Fall semesters while Tier 1 properties are able to fill during the Spring semester. Thus students are "pushed" to choose Tier 2/3 properties during high occupancy semesters.
+3.  Tier 1 properties are characterized by properties with
+    a.  Spring Semester Prices between \$1350 and \$1550 a semester
+    b.  Average Bed Counts of between 50 and 150
+    c.  Mean Maintenance Survey Ratings of between 3.7 and 4.0
+    d.  Mean Cleanliness Survey Ratings of between 3.7 and 4.0 Tier 2/3 properties are characterized by properties with
+    e.  Spring Semester Prices between \$1200 and \$1350 a semester
+    f.  Average Bed Counts of between \> 150 or \< 50 (either large scale apartment complexes or small apartment complexes such as "houses"
+    g.  Mean Maintenance Survey Ratings of less than 3.75
+    h.  Mean Cleanliness Survey Ratings of less than 3.75
+4.  Apartment complexes with a lower total bed count tend to reach full occupancy while those with higher bed counts do not. The marginal effort to sell each additional contract tends to increase with the number of beds offered by an apartment complex which is a difficulty of maintaining a large apartment complex even though there are benefits of "economies of scale" a higher resident/manager ratio, and more advantageous cleaning/maintenance contracts/apartments.
+5.  If the goal is to better the experience of BYU-Idaho students and deliver the best experience what we can see is that students care more around Maintenance and Cleanliness than they do about Culture and Activities on average as evidenced by survey and occupancy results. Also, student approved housing tends to deliver a worse "package overall" during the winter and Fall semesters as evidenced by the fact that when there is low occupancy students tend to remain or move to certain apartment complexes over others. Since high occupancy is close to guaranteed during the Winter and Spring semesters those complexes that are the least competitive are "propped-up" rather than replaced naturally through an open and competitive market.
+6.  Recommendations:
+
+To smooth out the cyclical nature of the student approved housing environment implement a mixture of the following:
+
+**Calendar Optimization:** Change the academic calendar to make spring more advantageous to the average student.
+
+**Structural Track Reform:** Change to a two track system.
+
+**Deregulation of Housing Requirements:** Remove the requirement to live in student approve housing, change to a more "free-market" system.
+
+**Strict Track Enforcement:** Enforce the track system to "smooth" out the semesters.
+
+To improve the student experience:
+
+**Encourage** the building of high-quality, medium-sized apartment complexes (Tier-1). And reduce the number of low-quality, small-sized apartment complexes/homes (Tier3) in student approved housing.
+
+**Reinforce** to owners and managers that the apartment complexes that tend to reach full occupancy in the spring tend to have higher maintenance and cleanliness ratings than those that do not fill during the Spring and that Culture and Activities ratings tend to be areas of improvement on an apartment complex that provide less of a "return-on-investment" compared to other "soft-factors" contributing to occupancy.
