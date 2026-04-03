@@ -80,8 +80,8 @@ website:
         - text: "Story Telling"
           file: story_telling.qmd
         - text: "---"
-        - text: "Project 1"
-          file: Story_Telling/project1.qmd
+        - text: "Student Approved Housing Analysis"
+          file: Story_Telling/w09_task1.qmd
         - text: "---"
         - text: "Project 2"
           file: Story_Telling/project2.qmd
