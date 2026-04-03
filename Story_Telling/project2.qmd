@@ -1,7 +1,7 @@
 ---
-title: "Client Report - [Insert Project Title]"
-subtitle: "Course DS 250"
-author: "[STUDENT NAME]"
+title: "Client Report - Further Housing Data Analysis "
+subtitle: "Housing and Student Living Office"
+author: "Kayson Garn"
 format:
   html:
     self-contained: true
@@ -22,7 +22,341 @@ format:
         caption: See code
 execute: 
   warning: false
-    
 ---
 
-### Paste in a template
+# Further Housing Analysis
+
+```{r}
+#| message: false
+#| warning: false
+#| include: false
+#to load neccessary libraries
+library(tidyverse)
+library(mosaic)
+library(pander)
+library(dplyr)
+library(stringr)
+library(margins)
+library(scales)
+library(rio)
+library(plotly)
+```
+
+```{r}
+#to read in the data
+HSL_data <- rio::import("HSL_data.csv")
+```
+
+```{r}
+#to investigate what bins should be created...
+HSL_data <- HSL_data |> 
+  mutate(property_size  = case_when(
+    Total_Beds < 20 ~ "House",
+    Total_Beds >=20 & Total_Beds <80 ~ "Small",
+    Total_Beds >=80 & Total_Beds <=180 ~ "Medium",
+    Total_Beds >180 ~ "Large"
+  ))
+
+
+hist_bins <- ggplot(HSL_data, aes(x=as.factor(property_size))) + geom_bar() + theme_minimal()
+
+hist_bins
+```
+
+So we define the following
+
+**House:** **x** \< 20
+
+**Small:** 20 \<= **x** \< 80
+
+**Medium**: 80 \<= **x** \<= 180
+
+**Large**: **x** \> 180
+
+Lets Look at the differences in prices compared to the different sized apartment complexes.
+
+### Original Price Comparison
+
+```{r}
+HSL_years_high_occ_grouped <- HSL_data |> 
+  filter(!is.na(Cleanliness)) |> 
+  group_by(Semester, Year, Full_Occ) |> 
+  summarise(
+    mean_price = mean(Mean_Contract_Price),
+    median_occ = median(Occ_Rate) * 100,
+    mean_beds = mean(Total_Beds),
+    mean_management = mean(Management),
+    mean_maintenance = mean(Maintenance_Response),
+    mean_cleanliness = mean(Cleanliness),
+    mean_activities = mean(Activities_Events),
+    mean_culture = mean(Culture),
+    mean_value = mean(Value),
+    mean_overall = mean(Overall)
+  ) |> 
+  mutate(
+    Semester = case_when(
+      Semester == "SP" ~ "Spring",
+      Semester == "WI" ~ "Winter"
+    )
+  )
+```
+
+```{r}
+#| message: false
+#| warning: false
+price_chart <- ggplot(HSL_years_high_occ_grouped, 
+                      aes(x = Year, y = mean_price, color = Full_Occ)) + 
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6",
+      "FALSE" = "#949598" 
+    )
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Price",
+    color = "Full Occupancy"
+  )
+
+ggplotly(price_chart)
+```
+
+### Price Comparison by Property Size
+
+```{r}
+HSL_size_spring <- HSL_data |> 
+  filter(!is.na(Cleanliness)) |> 
+  group_by(Semester, Year, Full_Occ, property_size) |> 
+  summarise(
+    mean_price = mean(Mean_Contract_Price),
+    median_occ = median(Occ_Rate) * 100,
+    mean_beds = mean(Total_Beds),
+    mean_management = mean(Management),
+    mean_maintenance = mean(Maintenance_Response),
+    mean_cleanliness = mean(Cleanliness),
+    mean_activities = mean(Activities_Events),
+    mean_culture = mean(Culture),
+    mean_value = mean(Value),
+    mean_overall = mean(Overall)
+  ) |> 
+  mutate(
+    Semester = case_when(
+      Semester == "SP" ~ "Spring",
+      Semester == "WI" ~ "Winter"
+    ) 
+  ) |>
+    filter(Semester == "Spring")
+```
+
+```{r}
+price_chart_spring <- ggplot(HSL_size_spring, 
+                      aes(x = Year, y = mean_price, color = Full_Occ)) + 
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~property_size) + 
+  theme_minimal() + 
+  labs(
+    y= "Mean Price",
+    x=" ",
+    title="Spring Price Comparison"
+  ) + 
+  theme(
+    legend.position = "bottom"
+  )
+
+price_chart_spring
+```
+
+```{r}
+HSL_size_winter <- HSL_data |> 
+  filter(!is.na(Cleanliness)) |> 
+  group_by(Semester, Year, Full_Occ, property_size) |> 
+  summarise(
+    mean_price = mean(Mean_Contract_Price),
+    median_occ = median(Occ_Rate) * 100,
+    mean_beds = mean(Total_Beds),
+    mean_management = mean(Management),
+    mean_maintenance = mean(Maintenance_Response),
+    mean_cleanliness = mean(Cleanliness),
+    mean_activities = mean(Activities_Events),
+    mean_culture = mean(Culture),
+    mean_value = mean(Value),
+    mean_overall = mean(Overall)
+  ) |> 
+  mutate(
+    Semester = case_when(
+      Semester == "SP" ~ "Spring",
+      Semester == "WI" ~ "Winter"
+    ) 
+  ) |>
+    filter(Semester == "Winter")
+```
+
+```{r}
+price_chart_winter <- ggplot(HSL_size_winter, 
+                      aes(x = Year, y = mean_price, color = Full_Occ)) + 
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~property_size) + 
+  theme_minimal() + 
+  labs(
+    y= "Mean Price",
+    x=" ",
+    title="Spring Price Comparison"
+  ) + 
+  theme(
+    legend.position = "bottom"
+  )
+
+price_chart_winter
+```
+
+### Original Occupancy Comparison
+
+```{r}
+#| message: false
+#| warning: false
+occ_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=median_occ, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6",
+      "FALSE" = "#949598" 
+    )) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Occupancy",
+    color = "Full Occupancy"
+  )
+
+ggplotly(occ_chart)
+```
+
+### Occupancy Comparison by Property Size
+
+```{r}
+occ_chart_spring <- ggplot(HSL_size_spring, 
+                      aes(x = Year, y = median_occ, color = Full_Occ)) + 
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~property_size) + 
+  theme_minimal() + 
+  labs(
+    y= "Mean Occupancy",
+    x=" ",
+    title="Spring Occupancy Comparison"
+  ) + 
+  theme(
+    legend.position = "bottom"
+  )
+
+occ_chart_spring
+```
+
+```{r}
+occ_chart_winter <- ggplot(HSL_size_winter, 
+                      aes(x = Year, y = median_occ, color = Full_Occ)) + 
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~property_size) + 
+  theme_minimal() + 
+  labs(
+    y= "Mean Occupancy",
+    x=" ",
+    title="Winter Occupancy Comparison"
+  ) + 
+  theme(
+    legend.position = "bottom"
+  )
+
+occ_chart_winter
+```
+
+### Original Beds Comparison
+
+```{r}
+#| message: false
+#| warning: false
+bedcount_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=mean_beds, color= Full_Occ)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~Semester) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(
+      "TRUE" = "#006EB6",
+      "FALSE" = "#949598" 
+    )) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
+    panel.spacing = unit(1.5, "lines")
+  ) + 
+  labs(
+    title = "Student Approved Housing 2022-2025",
+    x = "Year",
+    y = "Mean Total Beds",
+    color = "Full Occupancy"
+  )
+
+ggplotly(bedcount_chart)
+```
+
+### Bed Count Comparison by Property Size
+
+```{r}
+bed_chart_spring <- ggplot(HSL_size_spring, 
+                      aes(x = Year, y = mean_beds, color = Full_Occ)) + 
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~property_size) + 
+  theme_minimal() + 
+  labs(
+    y= "Mean Bed Count",
+    x=" ",
+    title="Spring Bed Count Comparison"
+  ) + 
+  theme(
+    legend.position = "bottom"
+  )
+
+bed_chart_spring
+```
+
+```{r}
+bed_chart_winter <- ggplot(HSL_size_winter, 
+                      aes(x = Year, y = mean_beds, color = Full_Occ)) + 
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~property_size) + 
+  theme_minimal() + 
+  labs(
+    y= "Mean Bed Count",
+    x=" ",
+    title="Winter Bed Count Comparison"
+  ) + 
+  theme(
+    legend.position = "bottom"
+  )
+
+bed_chart_winter
+```

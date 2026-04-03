@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Your_Name - Data Science Portfolio"
+  title: "Kayson Garn - Data Science Portfolio"
   favicon: Images/favicon.png
   back-to-top-navigation: true
   repo-url: https://github.com/username/username.github.io
@@ -32,8 +32,8 @@ website:
         file: story_telling.qmd
       - text: "Machine Learning"
         file: ml.qmd
-      - text: "Full Stack"
-        file: full_stack.qmd
+      #- text: "Full Stack"
+      #  file: full_stack.qmd
       - text: "Competitions"
         file: competition.qmd
   
@@ -105,19 +105,19 @@ website:
         - text: "Project 3"
           file: Machine_Learning/project3.qmd
         - text: "---"
-    - title: "Full Stack"
-      style: "docked"
-      background: light
-      contents:
-        - text: "Full Stack"
-          file: full_stack.qmd
-        - text: "---"
-        - text: "Project 1"
-          file: Full_Stack/project1.qmd
-        - text: "---"
-        - text: "Project 2"
-          file: Full_Stack/project2.qmd
-        - text: "---"
+  #  - title: "Full Stack"
+    #  style: "docked"
+   #   background: light
+    #  contents:
+    #    - text: "Full Stack"
+    #      file: full_stack.qmd
+    #    - text: "---"
+    #    - text: "Project 1"
+    #      file: Full_Stack/project1.qmd
+    #    - text: "---"
+    #    - text: "Project 2"
+    #      file: Full_Stack/project2.qmd
+    #    - text: "---"
     - title: "Competition"
       style: "docked"
       background: light
