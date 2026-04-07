@@ -83,7 +83,7 @@ website:
         - text: "Student Approved Housing Analysis"
           file: Story_Telling/w09_task1.qmd
         - text: "---"
-        - text: "Project 2"
+        - text: "Owner Housing Analysis"
           file: Story_Telling/project2.qmd
         - text: "---"
         - text: "Project 3"
