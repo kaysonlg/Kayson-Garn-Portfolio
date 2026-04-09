@@ -389,7 +389,7 @@ spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester ==
 anova_result <- aov(mean_price ~ Full_Occ, data = spring_data)
 
 summary(anova_result)
-print("The differences in the mean price between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.05 (p ≈ 0.0355)")
+print("The differences in the mean price between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.05 (p ≈ 0.0264)")
 ```
 
 **Market Dynamics and the "Shift to Quality" in Student Approved Housing**
@@ -439,7 +439,7 @@ print("The differences in the median occupancy between full and non-full apartme
 
 **Market Volatility and the Widening Seasonal Gap**
 
-An analysis of occupancy trends between 2022 and 2025 reveals an inverse relationship between Winter and Spring semesters. The data confirms a significant shift in the demand curve for student housing, as the student populations increasingly clusters in the Fall and Winter semesters. Over the four year period depicted above, the "Tier 2 and 3" properties saw a 10% decline in Spring occupancy, while Winter occupancy increased by approximately 9%. Rather than a steady stream of revenue year-round, the student housing market is cyclical which creates a higher risk environment for investors who must subsidize Spring losses with Winter gains.
+An analysis of occupancy trends between 2022 and 2025 reveals an inverse relationship between Winter and Spring semesters. The data confirms a significant shift in the demand curve for student housing, as the student populations increasingly clusters in the Fall and Winter semesters. Over the four year period depicted above, the "Tier 2 and 3" properties saw a 10% decline in Spring occupancy, while Winter occupancy increased by approximately 2%. Rather than a steady stream of revenue year-round, the student housing market is cyclical which creates a higher risk environment for investors who must subsidize Spring losses with Winter gains.
 
 To mitigate seasonal contraction and stabilize the market's cyclical occupancy rates, I propose the following recommendations aimed at "smoothing" the demand across semesters offered at BYU-Idaho.
 
@@ -487,7 +487,7 @@ spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester ==
 anova_result <- aov(mean_beds ~ Full_Occ, data = spring_data)
 
 summary(anova_result)
-print("The differences in the mean beds between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.01 (p ≈ 0.00319)")
+print("The differences in the mean beds between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.01 (p ≈ 0.0052)")
 ```
 
 #### Contract Density and Efficiency of Scale
@@ -565,7 +565,7 @@ anova_result <- aov(mean_maintenance ~ Full_Occ, data = spring_data)
 
 
 summary(anova_result)
-print("The differences in the mean maintenance survey results between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.10 (p ≈ 0.07).")
+print("The differences in the mean maintenance survey results between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.10 (p ≈ 0.0614).")
 ```
 
 This analysis reveals a decreasing gap between the maintenance ratings of fully occupied properties and those with vacancies during the Spring semester. This highlights that maintenance reliability acts as a driver of demand when the market has excess supply. This suggests that a reputation for prompt and effective maintenance provides a competitive advantage.
@@ -609,7 +609,7 @@ anova_result <- aov(mean_cleanliness ~ Full_Occ, data = spring_data)
 
 
 summary(anova_result)
-print("The differences in the mean cleanliness survey results between full and non-full apartment complexes in the Spring are not statistically significant at alpha = 0.10 (p ≈ 0.153)")
+print("The differences in the mean cleanliness survey results between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.05 (p ≈ 0.0233)")
 ```
 
 This analysis reveals a increasing gap between the cleanliness ratings of fully occupied properties and those with vacancies during the Spring semester. This highlights that overall complex cleanliness acts as a driver of demand when the market has excess supply. This suggests that a reputation for cleanliness provides a competitive advantage.
@@ -652,7 +652,7 @@ spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester ==
 anova_result <- aov(mean_activities ~ Full_Occ, data = spring_data)
 
 summary(anova_result)
-print("The differences in the mean activities survey results between full and non-full apartment complexes in the Spring are not statistically significant at alpha = 0.10, though the result approaches significance (p ≈ 0.11).")
+print("The differences in the mean activities survey results between full and non-full apartment complexes in the Spring are not statistically significant at alpha = 0.10, (p ≈ 0.201).")
 ```
 
 This analysis fails to observe a meaningful correlation between activities ratings and occupancy rates across the Winter and Spring semesters. While one might expect better activites to drive higher retention, the data suggests that there is some indifference among student's in this area. This indicates that while activities is a "soft" factor that affects the resident experience, it does not necessarily drive demand. Therefore, we might conclude that investment in this area results in a less than expected return in the form of retention during period of seasonal contraction (a.k.a. Spring).
@@ -693,7 +693,7 @@ spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester ==
 anova_result <- aov(mean_culture ~ Full_Occ, data = spring_data)
 
 summary(anova_result)
-print("The differences in the mean culture survey results between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.05 (p ≈ 0.015")
+print("The differences in the mean culture survey results between full and non-full apartment complexes in the Spring are statistically significant at alpha = 0.05 (p ≈ 0.00251")
 ```
 
 This analysis fails to observe a meaningful positive correlation between culture ratings and occupancy rates across the Winter and Spring semesters. While one might expect better culture to drive higher retention, the data suggests that lower culture ratings are associated with apartment complexes with apartment complexes that did not reach full occupancy during Spring semesters while no correlation is observed during the Winter semester. This indicates that while culture is a "soft" factor that affects the resident experience, it does not necessarily drive demand and and therefore is a low-reward "soft" factor to invest in.
@@ -734,7 +734,7 @@ spring_data <- HSL_years_high_occ_grouped[HSL_years_high_occ_grouped$Semester ==
 anova_result <- aov(mean_value ~ Full_Occ, data = spring_data)
 
 summary(anova_result)
-print("The differences in the mean value survey results between full and non-full apartment complexes in the Spring are not statistically significant at alpha = 0.10 (p ≈ 0.207")
+print("The differences in the mean value survey results between full and non-full apartment complexes in the Spring are not statistically significant at alpha = 0.10 (p ≈ 0.276")
 ```
 
 This analysis fails to observe a meaningful positive correlation between value ratings and occupancy rates across the Winter and Spring semesters. While one might expect better value ratings to drive higher retention, the data suggests that lower value ratings are associated with apartment complexes with apartment complexes that did not reach full occupancy during Spring semesters while no correlation is observed during the Winter semester. This indicates that while value is a "soft" factor that affects the resident experience, it does not necessarily drive demand and and therefore is a low-reward "soft" factor to invest in.
@@ -777,12 +777,21 @@ An analysis of occupancy trends between 2022 and 2025 reveals an inverse relatio
 2.  Tier 2 and 3 properties can maintain high-occupancy rates during the Winter and Fall semesters while Tier 1 properties are able to fill during the Spring semester. Thus students are "pushed" to choose Tier 2/3 properties during high occupancy semesters.
 3.  Tier 1 properties are characterized by properties with
     a.  Spring Semester Prices between \$1350 and \$1550 a semester
+
     b.  Average Bed Counts of between 50 and 150
+
     c.  Mean Maintenance Survey Ratings of between 3.7 and 4.0
-    d.  Mean Cleanliness Survey Ratings of between 3.7 and 4.0 Tier 2/3 properties are characterized by properties with
+
+    d.  Mean Cleanliness Survey Ratings of between 3.7 and 4.1
+
+        Tier 2/3 properties are characterized by properties with
+
     e.  Spring Semester Prices between \$1200 and \$1350 a semester
+
     f.  Average Bed Counts of between \> 150 or \< 50 (either large scale apartment complexes or small apartment complexes such as "houses"
+
     g.  Mean Maintenance Survey Ratings of less than 3.75
+
     h.  Mean Cleanliness Survey Ratings of less than 3.75
 4.  Apartment complexes with a lower total bed count tend to reach full occupancy while those with higher bed counts do not. The marginal effort to sell each additional contract tends to increase with the number of beds offered by an apartment complex which is a difficulty of maintaining a large apartment complex even though there are benefits of "economies of scale" a higher resident/manager ratio, and more advantageous cleaning/maintenance contracts/apartments.
 5.  If the goal is to better the experience of BYU-Idaho students and deliver the best experience what we can see is that students care more around Maintenance and Cleanliness than they do about Culture and Activities on average as evidenced by survey and occupancy results. Also, student approved housing tends to deliver a worse "package overall" during the winter and Fall semesters as evidenced by the fact that when there is low occupancy students tend to remain or move to certain apartment complexes over others. Since high occupancy is close to guaranteed during the Winter and Spring semesters those complexes that are the least competitive are "propped-up" rather than replaced naturally through an open and competitive market.

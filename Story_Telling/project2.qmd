@@ -361,6 +361,25 @@ bed_chart_winter <- ggplot(HSL_size_winter,
 bed_chart_winter
 ```
 
+```{r, fig.height=10, fig.width=10}
+price_chart_spring <- ggplot(HSL_size_spring, 
+                      aes(x = Year, y = mean_culture, color = Full_Occ)) + 
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) + 
+  facet_wrap(~property_size) + 
+  theme_minimal() + 
+  labs(
+    y= "Mean Price",
+    x=" ",
+    title="Spring Culture Comparison"
+  ) + 
+  theme(
+    legend.position = "bottom"
+  )
+
+price_chart_spring
+```
+
 # Creating the New Variable
 
 Here we want to determine the differences between properties that are full year-round, not-full year-round, full in winter but not spring, and full in spring but not winter.
@@ -396,16 +415,116 @@ HSL_data <- HSL_data |>
 ```
 
 ```{r}
-HSL_data |>
+occ_summary <- HSL_data |>
   group_by(Year_Occ_Category) |>
   summarize(
     avg_occ_rate = mean(Occ_Rate, na.rm = TRUE),
     avg_price    = mean(Mean_Contract_Price, na.rm = TRUE),
-    avg_becount    = mean(Total_Beds, na.rm = TRUE),
+    avg_bedcount    = mean(Total_Beds, na.rm = TRUE),
     avg_maintenance  = mean(Maintenance_Response, na.rm = TRUE),
     avg_cleanliness  = mean(Cleanliness, na.rm = TRUE),
     avg_culture  = mean(Culture, na.rm = TRUE),
     n_properties = n_distinct(Property),
     avg_culture  = mean(Culture, na.rm = TRUE),
+  ) |> 
+  filter(!is.na(Year_Occ_Category)) |> 
+  filter(Year_Occ_Category != "Full Spring, Not Winter")
+```
+
+```{r}
+#| message: false
+#| warning: false
+
+library(ggplot2)
+library(plotly)
+
+# Define consistent category colors
+category_colors <- c(
+  "Full Year-Round"        = "#006EB6",
+  "Not Full Year-Round"    = "#949598",
+  "Full Winter, Not Spring" = "#003865",
+  "Full Spring, Not Winter" = "#72B5E0"
+)
+
+
+# Helper function to keep styling consistent
+make_chart <- function(data, y_var, y_label) {
+  p <- ggplot(data, aes(x = Year_Occ_Category, y = .data[[y_var]], fill = Year_Occ_Category)) +
+    geom_col() +
+    scale_fill_manual(values = category_colors) +
+    theme_minimal() +
+    theme(
+      plot.title    = element_text(size = 16, face = "bold"),
+      axis.text.x   = element_text(angle = 20, hjust = 1),
+      legend.position = "none"
+    ) +
+    labs(
+      title = "Student Approved Housing 2022-2025",
+      x     = "Occupancy Category",
+      y     = y_label
+    )
+  ggplotly(p)
+}
+
+# Generate each chart
+make_chart(occ_summary, "avg_occ_rate",    "Avg Occupancy Rate")
+make_chart(occ_summary, "avg_price",        "Avg Contract Price")
+make_chart(occ_summary, "avg_bedcount",     "Avg Total Beds")
+make_chart(occ_summary, "avg_maintenance",  "Avg Maintenance Response")
+make_chart(occ_summary, "avg_cleanliness",  "Avg Cleanliness")
+make_chart(occ_summary, "avg_culture",      "Avg Culture")
+```
+
+```{r}
+make_chart <- function(data, y_var, y_label) {
+  p <- ggplot(data, aes(x = Year_Occ_Category, y = .data[[y_var]], color = Year_Occ_Category, group = 1)) +
+    geom_line(size = 1.2, color = "#DDDDDD") +
+    geom_point(size = 3) +
+    scale_color_manual(values = category_colors) +
+    theme_minimal() +
+    theme(
+      plot.title      = element_text(size = 16, face = "bold"),
+      axis.text.x     = element_text(angle = 20, hjust = 1),
+      legend.position = "none"
+    ) +
+    labs(
+      title = "Student Approved Housing 2022-2025",
+      x     = "Occupancy Category",
+      y     = y_label
+    )
+  ggplotly(p)
+}
+
+# Generate each chart
+make_chart(occ_summary, "avg_occ_rate",    "Avg Occupancy Rate")
+make_chart(occ_summary, "avg_price",        "Avg Contract Price")
+make_chart(occ_summary, "avg_bedcount",     "Avg Total Beds")
+make_chart(occ_summary, "avg_maintenance",  "Avg Maintenance Response")
+make_chart(occ_summary, "avg_cleanliness",  "Avg Cleanliness")
+make_chart(occ_summary, "avg_culture",      "Avg Culture")
+```
+
+```{r}
+# List of variables to test
+variables <- c("Occ_Rate", "Mean_Contract_Price", "Total_Beds", 
+               "Maintenance_Response", "Cleanliness", "Culture")
+
+# Run ANOVA for each variable
+anova_results <- map(variables, function(var) {
+  formula <- as.formula(paste(var, "~ Year_Occ_Category"))
+  aov_result <- aov(formula, data = HSL_data)
+  summary(aov_result)[[1]] |> 
+    rownames_to_column("Term") |> 
+    mutate(Variable = var)
+}) |> 
+  bind_rows() |> 
+  filter(Term == "Year_Occ_Category") |> 
+  select(Variable, `F value`, `Pr(>F)`) |> 
+  mutate(
+    Significant = ifelse(`Pr(>F)` < 0.05, "Yes", "No"),
+    `Pr(>F)` = round(`Pr(>F)`, 4),
+    `F value` = round(`F value`, 3)
   )
+
+anova_results
 ```
