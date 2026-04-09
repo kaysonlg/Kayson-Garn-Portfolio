@@ -30,6 +30,7 @@ execute:
 #| message: false
 #| warning: false
 #| include: false
+
 #to load neccessary libraries
 library(tidyverse)
 library(mosaic)
@@ -224,7 +225,8 @@ HSL_data <- HSL_data |>
 #to create an additional columns creating a boolean variable for occupancy 1=completely full, 0= not completely full
 
 HSL_data <- HSL_data |> 
-  mutate(Full_Occ = Occ_Rate == 1.00)
+  mutate(Full_Occ = boolocc == 1)
+#here instead of boolocc I had OCC_Rate == 1.00 which means that it was 100 percent full instead of the margin of error.
 
 HSL_data <- HSL_data |>
   mutate(

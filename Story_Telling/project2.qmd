@@ -158,7 +158,7 @@ HSL_size_spring <- HSL_data |>
     filter(Semester == "Spring")
 ```
 
-```{r}
+```{r, fig.height=10, fig.width=10}
 price_chart_spring <- ggplot(HSL_size_spring, 
                       aes(x = Year, y = mean_price, color = Full_Occ)) + 
   geom_line(linewidth = 1.2) +
@@ -202,7 +202,7 @@ HSL_size_winter <- HSL_data |>
     filter(Semester == "Winter")
 ```
 
-```{r}
+```{r, fig.height=10, fig.width=10}
 price_chart_winter <- ggplot(HSL_size_winter, 
                       aes(x = Year, y = mean_price, color = Full_Occ)) + 
   geom_line(linewidth = 1.2) +
@@ -253,7 +253,7 @@ ggplotly(occ_chart)
 
 ### Occupancy Comparison by Property Size
 
-```{r}
+```{r, fig.height=10, fig.width=10}
 occ_chart_spring <- ggplot(HSL_size_spring, 
                       aes(x = Year, y = median_occ, color = Full_Occ)) + 
   geom_line(linewidth = 1.2) +
@@ -272,7 +272,7 @@ occ_chart_spring <- ggplot(HSL_size_spring,
 occ_chart_spring
 ```
 
-```{r}
+```{r, fig.height=10, fig.width=10}
 occ_chart_winter <- ggplot(HSL_size_winter, 
                       aes(x = Year, y = median_occ, color = Full_Occ)) + 
   geom_line(linewidth = 1.2) +
@@ -323,7 +323,7 @@ ggplotly(bedcount_chart)
 
 ### Bed Count Comparison by Property Size
 
-```{r}
+```{r, fig.height=10, fig.width=10}
 bed_chart_spring <- ggplot(HSL_size_spring, 
                       aes(x = Year, y = mean_beds, color = Full_Occ)) + 
   geom_line(linewidth = 1.2) +
@@ -342,7 +342,7 @@ bed_chart_spring <- ggplot(HSL_size_spring,
 bed_chart_spring
 ```
 
-```{r}
+```{r, fig.height=10, fig.width=10}
 bed_chart_winter <- ggplot(HSL_size_winter, 
                       aes(x = Year, y = mean_beds, color = Full_Occ)) + 
   geom_line(linewidth = 1.2) +
@@ -359,4 +359,53 @@ bed_chart_winter <- ggplot(HSL_size_winter,
   )
 
 bed_chart_winter
+```
+
+# Creating the New Variable
+
+Here we want to determine the differences between properties that are full year-round, not-full year-round, full in winter but not spring, and full in spring but not winter.
+
+We will start off by creating that variable titled "Year Occupancy Categories".
+
+```{r}
+#lets start off by pivoting the table wider so that each property has only one row per year:
+
+HSL_wide <- HSL_data |> 
+  select(Property, Year, Semester, boolocc) |> 
+  pivot_wider(names_from = Semester, values_from = boolocc) |> 
+  rename(occ_winter = WI, occ_spring = SP)
+```
+
+```{r}
+#now we want to create the actual categorical variables: 
+
+HSL_wide <- HSL_wide |> 
+  mutate(Year_Occ_Category = case_when(
+    occ_winter==1 & occ_spring == 1 ~"Full Year-Round",
+    occ_winter==0 & occ_spring==0 ~"Not Full Year-Round",
+    occ_winter==1 & occ_spring==0~ "Full Winter, Not Spring",
+    occ_winter==0 & occ_spring==1 ~"Full Spring, Not Winter"
+  ))
+```
+
+```{r}
+#now I need to join this new variable onto the original dataset 
+HSL_data <- HSL_data |> 
+  left_join(HSL_wide |> select(Property, Year, Year_Occ_Category),
+            by = c("Property","Year"))
+```
+
+```{r}
+HSL_data |>
+  group_by(Year_Occ_Category) |>
+  summarize(
+    avg_occ_rate = mean(Occ_Rate, na.rm = TRUE),
+    avg_price    = mean(Mean_Contract_Price, na.rm = TRUE),
+    avg_becount    = mean(Total_Beds, na.rm = TRUE),
+    avg_maintenance  = mean(Maintenance_Response, na.rm = TRUE),
+    avg_cleanliness  = mean(Cleanliness, na.rm = TRUE),
+    avg_culture  = mean(Culture, na.rm = TRUE),
+    n_properties = n_distinct(Property),
+    avg_culture  = mean(Culture, na.rm = TRUE),
+  )
 ```
