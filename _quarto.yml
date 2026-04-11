@@ -26,12 +26,12 @@ website:
         file: resume.qmd
       - text: "Data Cleansing"
         file: cleansing.qmd
-      - text: "Data Exploration"
-        file: exploration.qmd
+      - text: "Statistical Analysis"
+        file: stat_analysis.qmd
       - text: "Story Telling"
         file: story_telling.qmd
-      - text: "Machine Learning"
-        file: ml.qmd
+     # - text: "Machine Learning"
+      #  file: ml.qmd
       #- text: "Full Stack"
       #  file: full_stack.qmd
       - text: "Competitions"
@@ -57,21 +57,21 @@ website:
         - text: "Project 3"
           file: Cleansing_Projects/project3.qmd
         - text: "---"
-    - title: "Data Exploration"
+    - title: "Statistical Analysis"
       style: "docked"
       background: light
       contents:
-        - text: "Data Exploration"
-          file: exploration.qmd
+        - text: "Statistical Analysis"
+          file: stat_analysis.qmd
         - text: "---"
-        - text: "Project 1"
-          file: Cleansing_Exploration/project1.qmd
+        - text: "Consulting Project- Power Plants"
+          file: "Statistical Analysis/project1.qmd"
         - text: "---"
         - text: "Project 2"
-          file: Cleansing_Exploration/project2.qmd
+          file: "Statistical Analysis/project2.qmd"
         - text: "---"
         - text: "Project 3"
-          file: Cleansing_Exploration/project3.qmd
+          file: "Statistical Analysis/project3.qmd"
         - text: "---"
     - title: "Story Telling"
       style: "docked"
@@ -89,22 +89,22 @@ website:
         - text: "Project 3"
           file: Story_Telling/project3.qmd
         - text: "---"
-    - title: "Machine Learning"
-      style: "docked"
-      background: light
-      contents:
-        - text: "Machine Learning"
-          file: ml.qmd
-        - text: "---"
-        - text: "Project 1"
-          file: Machine_Learning/project1.qmd
-        - text: "---"
-        - text: "Project 2"
-          file: Machine_Learning/project2.qmd
-        - text: "---"
-        - text: "Project 3"
-          file: Machine_Learning/project3.qmd
-        - text: "---"
+    # - title: "Machine Learning"
+    #   style: "docked"
+    #   background: light
+    #   contents:
+    #     - text: "Machine Learning"
+    #       file: ml.qmd
+    #     - text: "---"
+    #     - text: "Project 1"
+    #       file: Machine_Learning/project1.qmd
+    #     - text: "---"
+    #     - text: "Project 2"
+    #       file: Machine_Learning/project2.qmd
+    #     - text: "---"
+    #     - text: "Project 3"
+    #       file: Machine_Learning/project3.qmd
+    #     - text: "---"
   #  - title: "Full Stack"
     #  style: "docked"
    #   background: light

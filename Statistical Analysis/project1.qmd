@@ -1,0 +1,215 @@
+---
+title: "Consulting Project- Power Plants"
+subtitle: "Course DS 250"
+author: "[STUDENT NAME]"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+execute: 
+  warning: false
+---
+
+### Paste in a template
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(mosaic)
+library(DT)
+library(pander)
+library(car)
+library(tidyverse)
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+
+nuclear_data <- read.csv("C:\\Users\\kayso\\OneDrive\\Desktop\\BYUI\\Semesters\\Fall 2025\\Intermediate Stats\\Statistics-Notebook-master\\Statistics-Notebook-master\\Data\\power_plant_database_global.csv")
+```
+
+```{r echo=TRUE}
+nuclear_data_lim <- select(nuclear_data, c(country_long, capacity_mw, primary_fuel))
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+final_nuc_sources <- filter(nuclear_data_lim, primary_fuel %in% c('Hydro','Nuclear','Solar','Wind', 'Geothermal') )
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+final_nuc_sources <- filter(final_nuc_sources, capacity_mw < 11000)
+```
+
+# Results and Executive Summary
+
+The question of whether a country focused on increasing it's national electricity production capacity, should choose wind, solar, geothermal, hydro, or nuclear electricity is important to answer. Especially for developing economies seeking to increase it's energy output while remaining ecologically focused.
+
+To answer the question we will look at a combination of data analysis and statistical tests to discover which fuel type is best for the combination of goals listed above. While not exhaustive, this study seeks to make use of a particular data set produced by the World Resources Institute produced in 2021 called the Global Power Plant Data Base.
+
+Based on the data and the application of the Kruskal Wallis test, we can conclude that nuclear, as a fuel source, has a higher average energy production capacity of 2092 mega-watts. The fuel type with the highest outliers is hydro with three observations above that of the highest capacity recorded for the nuclear fuel type.
+
+This observation is supported by the results of a Kruskal-Wallis test that resulted in us concluding that at least one of the fuel types tested had a mean stochastically different from the rest. The graphical and numerical summaries further supported that observation. Therefore, a country seeking for reliable, high capacity, and clean energy sources should seek to invest in nuclear technology and in nuclear reactor construction.
+
+An important note is that hydro plants have higher potential generation capacities, as demonstrated by China with the top three capacity power plants being hydro plants. As such if the developing country has the natural resources available to it, namely strong current rivers and waterfalls, then hydro may be considered a viable clean energy source to pursue the given goals above.
+
+# Analysis Process
+
+### The Data
+
+Reliable, environmentally sustainable, and affordable energy sector is essential to modern society. Governments, utilities companies, as well as influential companies regularly make decisions that affect the energy sector as well as depend on it.
+
+The Global Power Plant Database is an open-source open-access data set of grid scale (1 MW and greater) electricity generating facilities operating across the world.
+
+The database currently contains nearly 35000 power plants in 167 countries, representing about roughly 72% of the world's capacity according to the World Resources Institute (2021).
+
+The methodology for the dataset creation is given in the World Resources Institute publication "A Global Database of Power Plants".
+
+The original data set contains the following fields along with their descriptions:
+
+-   `country` (text): 3 character country code corresponding to the ISO 3166-1 alpha-3 specification \[5\]
+-   `country_long` (text): longer form of the country designation
+-   `name` (text): name or title of the power plant, generally in Romanized form
+-   `gppd_idnr` (text): 10 or 12 character identifier for the power plant
+-   `capacity_mw` (number): electrical generating capacity in megawatts
+-   `latitude` (number): geolocation in decimal degrees; WGS84 (EPSG:4326)
+-   `longitude` (number): geolocation in decimal degrees; WGS84 (EPSG:4326)
+-   `primary_fuel` (text): energy source used in primary electricity generation or export
+-   `other_fuel1` (text): energy source used in electricity generation or export
+-   `other_fuel2` (text): energy source used in electricity generation or export
+-   `other_fuel3` (text): energy source used in electricity generation or export
+-   `commissioning_year` (number): year of plant operation, weighted by unit-capacity when data is available
+-   `owner` (text): majority shareholder of the power plant, generally in Romanized form
+-   `source` (text): entity reporting the data; could be an organization, report, or document, generally in Romanized form
+-   `url` (text): web document corresponding to the `source` field
+-   `geolocation_source` (text): attribution for geolocation information
+-   `wepp_id` (text): a reference to a unique plant identifier in the widely-used PLATTS-WEPP database.
+-   `year_of_capacity_data` (number): year the capacity information was reported
+-   `generation_gwh_2013` (number): electricity generation in gigawatt-hours reported for the year 2013
+-   `generation_gwh_2014` (number): electricity generation in gigawatt-hours reported for the year 2014
+-   `generation_gwh_2015` (number): electricity generation in gigawatt-hours reported for the year 2015
+-   `generation_gwh_2016` (number): electricity generation in gigawatt-hours reported for the year 2016
+-   `generation_gwh_2017` (number): electricity generation in gigawatt-hours reported for the year 2017
+-   `generation_gwh_2018` (number): electricity generation in gigawatt-hours reported for the year 2018
+-   `generation_gwh_2019` (number): electricity generation in gigawatt-hours reported for the year 2019
+-   `generation_data_source` (text): attribution for the reported generation information
+-   `estimated_generation_gwh_2013` (number): estimated electricity generation in gigawatt-hours for the year 2013 (see \[2\])
+-   `estimated_generation_gwh_2014` (number): estimated electricity generation in gigawatt-hours for the year 2014 (see \[2\])
+-   `estimated_generation_gwh_2015` (number): estimated electricity generation in gigawatt-hours for the year 2015 (see \[2\])
+-   `estimated_generation_gwh_2016` (number): estimated electricity generation in gigawatt-hours for the year 2016 (see \[2\])
+-   `estimated_generation_gwh_2017` (number): estimated electricity generation in gigawatt-hours for the year 2017 (see \[2\])
+-   `estimated_generation_note_2013` (text): label of the model/method used to estimate generation for the year 2013 (see section on this field below)
+-   `estimated_generation_note_2014` (text): label of the model/method used to estimate generation for the year 2014 (see section on this field below)
+-   `estimated_generation_note_2015` (text): label of the model/method used to estimate generation for the year 2015 (see section on this field below)
+-   `estimated_generation_note_2016` (text): label of the model/method used to estimate generation for the year 2016 (see section on this field below)
+-   `estimated_generation_note_2017` (text): label of the model/method used to estimate generation for the year 2017 (see section on this field below)
+
+The citation for the source of the data can be found below:
+
+Title: Global Power Plant Database\
+Description: A comprehensive, global, open source database of power plants\
+Version: 1.3.0\
+Release Date: 2021-06-02\
+URI: <http://datasets.wri.org/dataset/globalpowerplantdatabase>\
+Copyright: Copyright 2018-2021 World Resources Institute and Data Contributors\
+License: Creative Commons Attribution 4.0 International -- CC BY 4.0\
+Contact: [powerexplorer\@wri.org](mailto:powerexplorer@wri.org){.email}\
+Citation: Global Energy Observatory, Google, KTH Royal Institute of Technology in Stockholm, Enipedia, World Resources Institute. 2019. Global Power Plant Database. Published on Resource Watch and Google Earth Engine. <http://resourcewatch.org/> <https://earthengine.google.com/>
+
+### Data Wrangling Process
+
+First, the data was filtered down to just the three variables country_long, capacity_mw, and primary primary_fuel. Primary fuel type and capacity in mega watts are our numeric and categorical variables of interest while the country name is included for reference.
+
+Second, the data was filtered from fifteen original energy production sources down to five for application of the Anova and Kruskal Wallis tests.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+pander(table(nuclear_data_lim$primary_fuel))
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+pander(table(final_nuc_sources$primary_fuel))
+```
+
+Third, after visualizing the data and discovering an outlier, that of the Three Gorges Dam in China with a mega watt capacity of 22500, the outlier was removed.
+
+It is interesting to not that the top 3 mega watt capacity energy producers are located in China. The fuel type for all three are hydroelectric.
+
+The above filtering was the only data wrangling applied to this project.
+
+```{r}
+datatable(final_nuc_sources[1:100, ])
+```
+
+Only the first 100 results have been included due to the sheer size of the dataset being used in this analysis.
+
+### Boxplot Chart and Numeric Summary
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+boxplot(capacity_mw ~ as.factor(primary_fuel), 
+        col="lightgray", xlab="Fuel Type (Clean)", main=" World Clean Electricity Production (2021)", ylab="Electrical Capacity M(W)",data=final_nuc_sources, outline = FALSE)
+
+```
+
+The graph above depicts a box plot for each of the selected electricity generation source types. As can be clearly seen above the box plot for the nuclear source data is different than the rest of the source types. For the purpose of the ANOVA and Kruskal Wallis tests the mean of the nuclear source appears to be different than the rest of the source types. Note that an outlier of the hydro source data was removed to better visualize the data, it has a generation capacity of over 1100 mega watts.
+
+With that outlier in mind, it is also important to note that in addition to nuclear as a energy genration choice for a higher mean, hydro also has a large amount of variation. Thus when determining whether to built a nuclear reactor or a hydro electricity generator it is important to determine the purpose and the style and design of the generator and compare from there.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+pander(favstats(capacity_mw ~ as.factor(primary_fuel), data=final_nuc_sources))
+```
+
+Notice in the data set that Geothermal and Nuclear have the fewest number of observations. Also, Hydro has the highest max generation capacity while Nuclear has the highest average capacity of energy generation.
+
+### Hypotheses
+
+Our null hypothesis for the following Kruskal-Wallis test is that all fuel types have an equal mean mega-watt energy capacity or that the data attributed to each of the fuel types are samples from the same distribution.
+
+$$   H_0: \text{All samples are from the same distribution.} $$
+
+Our alternative hypothesis for the Kruskall-Wallis test is that at least one of the fuel types is a sample from a different distribution from the rest.
+
+$$   H_a: \text{At least one sample's distribution is stochastically different.} $$ In the Kruskall-Wallis test we will be using an $\alpha$= 0.10 to determine the reusts of our hypothesis testing.
+
+### Kruskal-Wallis
+
+The Kruskal-Wallis test is an alternative to the Anova test when normality cannot be assumed. As will be explained in the "Diagnostic Plot" section we will use the Kruskall-Wallis test as it appears more appropriate to use given the data presented.
+
+Below is a summary of the Anova test.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+#to show the anova test output
+aovenergy <- aov(capacity_mw ~ as.factor(primary_fuel), data=final_nuc_sources)
+
+(summary(aovenergy))
+```
+
+Below is a summary of the Kruskal-Wallis test.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+kruskout <- kruskal.test(capacity_mw ~ as.factor(primary_fuel), data=final_nuc_sources)
+
+(kruskout)
+```
+
+Both tests result in a p-value of less than $\alpha$=0.05 meaning that we can reject the null hypothesis that the fuel types represented in our data are from the same distribution.
+
+### Diagnostic Plots
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+par(mfrow=c(1,2))
+plot(aovenergy,which=1:2)
+```
+
+The graph on the left demonstrates that the variances in mega-watt capacities of the various fuel types are different than one another and leads us to conclude that using a Kruskal-Wallis test would be preferable to that of an Anova test.
+
+The graph on the right is depicted to determine whether the data gathered is normally distributed. In this case it is reasonable to conclude that it is not safe to assume normality of the residuals. As such we can conclude that since the assumptions of equal variance and normality are not met for the Anova test is is safer to use the alternative Kruskal-Wallis test for increased accuracy in our conclusions.

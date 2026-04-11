@@ -31,266 +31,34 @@
     ]
   },
   {
-    "objectID": "Story_Telling/project1.html",
-    "href": "Story_Telling/project1.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "ml.html",
-    "href": "ml.html",
+    "objectID": "stat_analysis.html",
+    "href": "stat_analysis.html",
     "title": "about me",
     "section": "",
     "text": "MarkDown Basics",
     "crumbs": [
-      "Machine Learning"
+      "Statistical Analysis"
     ]
   },
   {
-    "objectID": "ml.html#title-2-header",
-    "href": "ml.html#title-2-header",
+    "objectID": "stat_analysis.html#title-2-header",
+    "href": "stat_analysis.html#title-2-header",
     "title": "about me",
     "section": "",
     "text": "MarkDown Basics",
     "crumbs": [
-      "Machine Learning"
+      "Statistical Analysis"
     ]
   },
   {
-    "objectID": "Machine_Learning/project2.html",
-    "href": "Machine_Learning/project2.html",
+    "objectID": "Statistical Analysis/project2.html",
+    "href": "Statistical Analysis/project2.html",
     "title": "Client Report - [Insert Project Title]",
     "section": "",
     "text": "Paste in a template\n\n\n\n\n Back to top",
     "crumbs": [
-      "Machine Learning",
+      "Statistical Analysis",
       "Project 2"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics"
-  },
-  {
-    "objectID": "index.html#title-2-header",
-    "href": "index.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics"
-  },
-  {
-    "objectID": "Full_Stack/project2.html",
-    "href": "Full_Stack/project2.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "exploration.html",
-    "href": "exploration.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Data Exploration"
-    ]
-  },
-  {
-    "objectID": "exploration.html#title-2-header",
-    "href": "exploration.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Data Exploration"
-    ]
-  },
-  {
-    "objectID": "Competition/project3.html",
-    "href": "Competition/project3.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Competitions",
-      "Project 3"
-    ]
-  },
-  {
-    "objectID": "Competition/project1.html",
-    "href": "Competition/project1.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Competitions",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "Cleansing_Projects/project2.html",
-    "href": "Cleansing_Projects/project2.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Cleansing",
-      "Project 2"
-    ]
-  },
-  {
-    "objectID": "Cleansing_Exploration/project3.html",
-    "href": "Cleansing_Exploration/project3.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Exploration",
-      "Project 3"
-    ]
-  },
-  {
-    "objectID": "Cleansing_Exploration/project1.html",
-    "href": "Cleansing_Exploration/project1.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Exploration",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "cleansing.html",
-    "href": "cleansing.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Data Cleansing"
-    ]
-  },
-  {
-    "objectID": "cleansing.html#title-2-header",
-    "href": "cleansing.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Data Cleansing"
-    ]
-  },
-  {
-    "objectID": "Cleansing_Exploration/project2.html",
-    "href": "Cleansing_Exploration/project2.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Exploration",
-      "Project 2"
-    ]
-  },
-  {
-    "objectID": "Cleansing_Projects/project1.html",
-    "href": "Cleansing_Projects/project1.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Cleansing",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "Cleansing_Projects/project3.html",
-    "href": "Cleansing_Projects/project3.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Cleansing",
-      "Project 3"
-    ]
-  },
-  {
-    "objectID": "Competition/project2.html",
-    "href": "Competition/project2.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Competitions",
-      "Project 2"
-    ]
-  },
-  {
-    "objectID": "competition.html",
-    "href": "competition.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Competitions",
-      "Competition"
-    ]
-  },
-  {
-    "objectID": "competition.html#title-2-header",
-    "href": "competition.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Competitions",
-      "Competition"
-    ]
-  },
-  {
-    "objectID": "Full_Stack/project1.html",
-    "href": "Full_Stack/project1.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "full_stack.html",
-    "href": "full_stack.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics"
-  },
-  {
-    "objectID": "full_stack.html#title-2-header",
-    "href": "full_stack.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics"
-  },
-  {
-    "objectID": "Machine_Learning/project1.html",
-    "href": "Machine_Learning/project1.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Machine Learning",
-      "Project 1"
-    ]
-  },
-  {
-    "objectID": "Machine_Learning/project3.html",
-    "href": "Machine_Learning/project3.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Machine Learning",
-      "Project 3"
     ]
   },
   {
@@ -327,6 +95,207 @@
     "title": "Kayson Garn’s CV",
     "section": "",
     "text": "https://www.linkedin.com/feed/update/urn:li:activity:7353528492719841280/?originTrackingId=VTRnztPyepetlwBr5bhp5w%3D%3D"
+  },
+  {
+    "objectID": "Machine_Learning/project3.html",
+    "href": "Machine_Learning/project3.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "Machine_Learning/project1.html",
+    "href": "Machine_Learning/project1.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "full_stack.html",
+    "href": "full_stack.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "full_stack.html#title-2-header",
+    "href": "full_stack.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "Full_Stack/project1.html",
+    "href": "Full_Stack/project1.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "competition.html",
+    "href": "competition.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics",
+    "crumbs": [
+      "Competitions",
+      "Competition"
+    ]
+  },
+  {
+    "objectID": "competition.html#title-2-header",
+    "href": "competition.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics",
+    "crumbs": [
+      "Competitions",
+      "Competition"
+    ]
+  },
+  {
+    "objectID": "Competition/project2.html",
+    "href": "Competition/project2.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Competitions",
+      "Project 2"
+    ]
+  },
+  {
+    "objectID": "Cleansing_Projects/project3.html",
+    "href": "Cleansing_Projects/project3.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Cleansing",
+      "Project 3"
+    ]
+  },
+  {
+    "objectID": "Cleansing_Projects/project1.html",
+    "href": "Cleansing_Projects/project1.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Cleansing",
+      "Project 1"
+    ]
+  },
+  {
+    "objectID": "Cleansing_Projects/project2.html",
+    "href": "Cleansing_Projects/project2.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Cleansing",
+      "Project 2"
+    ]
+  },
+  {
+    "objectID": "Competition/project1.html",
+    "href": "Competition/project1.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Competitions",
+      "Project 1"
+    ]
+  },
+  {
+    "objectID": "Competition/project3.html",
+    "href": "Competition/project3.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Competitions",
+      "Project 3"
+    ]
+  },
+  {
+    "objectID": "exploration.html",
+    "href": "exploration.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "exploration.html#title-2-header",
+    "href": "exploration.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "Full_Stack/project2.html",
+    "href": "Full_Stack/project2.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "index.html#title-2-header",
+    "href": "index.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "Machine_Learning/project2.html",
+    "href": "Machine_Learning/project2.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "ml.html",
+    "href": "ml.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "ml.html#title-2-header",
+    "href": "ml.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "Statistical Analysis/project1.html",
+    "href": "Statistical Analysis/project1.html",
+    "title": "Consulting Project- Power Plants",
+    "section": "",
+    "text": "Paste in a template\n\n\nShow the code\nlibrary(mosaic)\nlibrary(DT)\nlibrary(pander)\nlibrary(car)\nlibrary(tidyverse)\n\n\n\n\nShow the code\nnuclear_data &lt;- read.csv(\"C:\\\\Users\\\\kayso\\\\OneDrive\\\\Desktop\\\\BYUI\\\\Semesters\\\\Fall 2025\\\\Intermediate Stats\\\\Statistics-Notebook-master\\\\Statistics-Notebook-master\\\\Data\\\\power_plant_database_global.csv\")\n\n\n\n\nShow the code\nnuclear_data_lim &lt;- select(nuclear_data, c(country_long, capacity_mw, primary_fuel))\n\n\n\n\nShow the code\nfinal_nuc_sources &lt;- filter(nuclear_data_lim, primary_fuel %in% c('Hydro','Nuclear','Solar','Wind', 'Geothermal') )\n\n\n\n\nShow the code\nfinal_nuc_sources &lt;- filter(final_nuc_sources, capacity_mw &lt; 11000)\n\n\n\n\nResults and Executive Summary\nThe question of whether a country focused on increasing it’s national electricity production capacity, should choose wind, solar, geothermal, hydro, or nuclear electricity is important to answer. Especially for developing economies seeking to increase it’s energy output while remaining ecologically focused.\nTo answer the question we will look at a combination of data analysis and statistical tests to discover which fuel type is best for the combination of goals listed above. While not exhaustive, this study seeks to make use of a particular data set produced by the World Resources Institute produced in 2021 called the Global Power Plant Data Base.\nBased on the data and the application of the Kruskal Wallis test, we can conclude that nuclear, as a fuel source, has a higher average energy production capacity of 2092 mega-watts. The fuel type with the highest outliers is hydro with three observations above that of the highest capacity recorded for the nuclear fuel type.\nThis observation is supported by the results of a Kruskal-Wallis test that resulted in us concluding that at least one of the fuel types tested had a mean stochastically different from the rest. The graphical and numerical summaries further supported that observation. Therefore, a country seeking for reliable, high capacity, and clean energy sources should seek to invest in nuclear technology and in nuclear reactor construction.\nAn important note is that hydro plants have higher potential generation capacities, as demonstrated by China with the top three capacity power plants being hydro plants. As such if the developing country has the natural resources available to it, namely strong current rivers and waterfalls, then hydro may be considered a viable clean energy source to pursue the given goals above.\n\n\nAnalysis Process\n\nThe Data\nReliable, environmentally sustainable, and affordable energy sector is essential to modern society. Governments, utilities companies, as well as influential companies regularly make decisions that affect the energy sector as well as depend on it.\nThe Global Power Plant Database is an open-source open-access data set of grid scale (1 MW and greater) electricity generating facilities operating across the world.\nThe database currently contains nearly 35000 power plants in 167 countries, representing about roughly 72% of the world’s capacity according to the World Resources Institute (2021).\nThe methodology for the dataset creation is given in the World Resources Institute publication “A Global Database of Power Plants”.\nThe original data set contains the following fields along with their descriptions:\n\ncountry (text): 3 character country code corresponding to the ISO 3166-1 alpha-3 specification [5]\ncountry_long (text): longer form of the country designation\nname (text): name or title of the power plant, generally in Romanized form\ngppd_idnr (text): 10 or 12 character identifier for the power plant\ncapacity_mw (number): electrical generating capacity in megawatts\nlatitude (number): geolocation in decimal degrees; WGS84 (EPSG:4326)\nlongitude (number): geolocation in decimal degrees; WGS84 (EPSG:4326)\nprimary_fuel (text): energy source used in primary electricity generation or export\nother_fuel1 (text): energy source used in electricity generation or export\nother_fuel2 (text): energy source used in electricity generation or export\nother_fuel3 (text): energy source used in electricity generation or export\ncommissioning_year (number): year of plant operation, weighted by unit-capacity when data is available\nowner (text): majority shareholder of the power plant, generally in Romanized form\nsource (text): entity reporting the data; could be an organization, report, or document, generally in Romanized form\nurl (text): web document corresponding to the source field\ngeolocation_source (text): attribution for geolocation information\nwepp_id (text): a reference to a unique plant identifier in the widely-used PLATTS-WEPP database.\nyear_of_capacity_data (number): year the capacity information was reported\ngeneration_gwh_2013 (number): electricity generation in gigawatt-hours reported for the year 2013\ngeneration_gwh_2014 (number): electricity generation in gigawatt-hours reported for the year 2014\ngeneration_gwh_2015 (number): electricity generation in gigawatt-hours reported for the year 2015\ngeneration_gwh_2016 (number): electricity generation in gigawatt-hours reported for the year 2016\ngeneration_gwh_2017 (number): electricity generation in gigawatt-hours reported for the year 2017\ngeneration_gwh_2018 (number): electricity generation in gigawatt-hours reported for the year 2018\ngeneration_gwh_2019 (number): electricity generation in gigawatt-hours reported for the year 2019\ngeneration_data_source (text): attribution for the reported generation information\nestimated_generation_gwh_2013 (number): estimated electricity generation in gigawatt-hours for the year 2013 (see [2])\nestimated_generation_gwh_2014 (number): estimated electricity generation in gigawatt-hours for the year 2014 (see [2])\nestimated_generation_gwh_2015 (number): estimated electricity generation in gigawatt-hours for the year 2015 (see [2])\nestimated_generation_gwh_2016 (number): estimated electricity generation in gigawatt-hours for the year 2016 (see [2])\nestimated_generation_gwh_2017 (number): estimated electricity generation in gigawatt-hours for the year 2017 (see [2])\nestimated_generation_note_2013 (text): label of the model/method used to estimate generation for the year 2013 (see section on this field below)\nestimated_generation_note_2014 (text): label of the model/method used to estimate generation for the year 2014 (see section on this field below)\nestimated_generation_note_2015 (text): label of the model/method used to estimate generation for the year 2015 (see section on this field below)\nestimated_generation_note_2016 (text): label of the model/method used to estimate generation for the year 2016 (see section on this field below)\nestimated_generation_note_2017 (text): label of the model/method used to estimate generation for the year 2017 (see section on this field below)\n\nThe citation for the source of the data can be found below:\nTitle: Global Power Plant Database\nDescription: A comprehensive, global, open source database of power plants\nVersion: 1.3.0\nRelease Date: 2021-06-02\nURI: http://datasets.wri.org/dataset/globalpowerplantdatabase\nCopyright: Copyright 2018-2021 World Resources Institute and Data Contributors\nLicense: Creative Commons Attribution 4.0 International – CC BY 4.0\nContact: powerexplorer@wri.org\nCitation: Global Energy Observatory, Google, KTH Royal Institute of Technology in Stockholm, Enipedia, World Resources Institute. 2019. Global Power Plant Database. Published on Resource Watch and Google Earth Engine. http://resourcewatch.org/ https://earthengine.google.com/\n\n\nData Wrangling Process\nFirst, the data was filtered down to just the three variables country_long, capacity_mw, and primary primary_fuel. Primary fuel type and capacity in mega watts are our numeric and categorical variables of interest while the country name is included for reference.\nSecond, the data was filtered from fifteen original energy production sources down to five for application of the Anova and Kruskal Wallis tests.\n\n\nShow the code\npander(table(nuclear_data_lim$primary_fuel))\n\n\n\nTable continues below\n\n\n\n\n\n\n\n\n\n\n\n\nBiomass\nCoal\nCogeneration\nGas\nGeothermal\nHydro\nNuclear\nOil\n\n\n\n\n1430\n2330\n41\n3998\n189\n7156\n195\n2320\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOther\nPetcoke\nSolar\nStorage\nWaste\nWave and Tidal\nWind\n\n\n\n\n43\n12\n10665\n135\n1068\n10\n5344\n\n\n\n\n\n\n\nShow the code\npander(table(final_nuc_sources$primary_fuel))\n\n\n\n\n\n\n\n\n\n\n\n\nGeothermal\nHydro\nNuclear\nSolar\nWind\n\n\n\n\n189\n7153\n195\n10665\n5344\n\n\n\n\n\nThird, after visualizing the data and discovering an outlier, that of the Three Gorges Dam in China with a mega watt capacity of 22500, the outlier was removed.\nIt is interesting to not that the top 3 mega watt capacity energy producers are located in China. The fuel type for all three are hydroelectric.\nThe above filtering was the only data wrangling applied to this project.\n\n\nShow the code\ndatatable(final_nuc_sources[1:100, ])\n\n\n\n\n\n\nOnly the first 100 results have been included due to the sheer size of the dataset being used in this analysis.\n\n\nBoxplot Chart and Numeric Summary\n\n\nShow the code\nboxplot(capacity_mw ~ as.factor(primary_fuel), \n        col=\"lightgray\", xlab=\"Fuel Type (Clean)\", main=\" World Clean Electricity Production (2021)\", ylab=\"Electrical Capacity M(W)\",data=final_nuc_sources, outline = FALSE)\n\n\n\n\n\n\n\n\n\nThe graph above depicts a box plot for each of the selected electricity generation source types. As can be clearly seen above the box plot for the nuclear source data is different than the rest of the source types. For the purpose of the ANOVA and Kruskal Wallis tests the mean of the nuclear source appears to be different than the rest of the source types. Note that an outlier of the hydro source data was removed to better visualize the data, it has a generation capacity of over 1100 mega watts.\nWith that outlier in mind, it is also important to note that in addition to nuclear as a energy genration choice for a higher mean, hydro also has a large amount of variation. Thus when determining whether to built a nuclear reactor or a hydro electricity generator it is important to determine the purpose and the style and design of the generator and compare from there.\n\n\nShow the code\npander(favstats(capacity_mw ~ as.factor(primary_fuel), data=final_nuc_sources))\n\n\n\nTable continues below\n\n\n\n\n\n\n\n\n\n\n\n\nas.factor(primary_fuel)\nmin\nQ1\nmedian\nQ3\nmax\nmean\nsd\n\n\n\n\nGeothermal\n1\n18.2\n30\n80\n1163\n67.13\n114.6\n\n\nHydro\n1\n5.38\n20\n93.3\n8851\n140.5\n433.1\n\n\nNuclear\n20\n1147\n1888\n2668\n8212\n2092\n1304\n\n\nSolar\n1\n2.6\n5.8\n18\n1021\n17.66\n41.94\n\n\nWind\n1\n10\n27\n49\n6000\n49.22\n106.1\n\n\n\n\n\n\n\n\n\n\nn\nmissing\n\n\n\n\n189\n0\n\n\n7153\n0\n\n\n195\n0\n\n\n10665\n0\n\n\n5344\n0\n\n\n\n\n\nNotice in the data set that Geothermal and Nuclear have the fewest number of observations. Also, Hydro has the highest max generation capacity while Nuclear has the highest average capacity of energy generation.\n\n\nHypotheses\nOur null hypothesis for the following Kruskal-Wallis test is that all fuel types have an equal mean mega-watt energy capacity or that the data attributed to each of the fuel types are samples from the same distribution.\n   H_0: \\text{All samples are from the same distribution.} \nOur alternative hypothesis for the Kruskall-Wallis test is that at least one of the fuel types is a sample from a different distribution from the rest.\n   H_a: \\text{At least one sample's distribution is stochastically different.}  In the Kruskall-Wallis test we will be using an \\alpha= 0.10 to determine the reusts of our hypothesis testing.\n\n\nKruskal-Wallis\nThe Kruskal-Wallis test is an alternative to the Anova test when normality cannot be assumed. As will be explained in the “Diagnostic Plot” section we will use the Kruskall-Wallis test as it appears more appropriate to use given the data presented.\nBelow is a summary of the Anova test.\n\n\nShow the code\n#to show the anova test output\naovenergy &lt;- aov(capacity_mw ~ as.factor(primary_fuel), data=final_nuc_sources)\n\n(summary(aovenergy))\n\n\n                           Df    Sum Sq   Mean Sq F value Pr(&gt;F)    \nas.factor(primary_fuel)     4 8.620e+08 215499963    2895 &lt;2e-16 ***\nResiduals               23541 1.752e+09     74441                   \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\nBelow is a summary of the Kruskal-Wallis test.\n\n\nShow the code\nkruskout &lt;- kruskal.test(capacity_mw ~ as.factor(primary_fuel), data=final_nuc_sources)\n\n(kruskout)\n\n\n\n    Kruskal-Wallis rank sum test\n\ndata:  capacity_mw by as.factor(primary_fuel)\nKruskal-Wallis chi-squared = 3798.5, df = 4, p-value &lt; 2.2e-16\n\n\nBoth tests result in a p-value of less than \\alpha=0.05 meaning that we can reject the null hypothesis that the fuel types represented in our data are from the same distribution.\n\n\nDiagnostic Plots\n\n\nShow the code\npar(mfrow=c(1,2))\nplot(aovenergy,which=1:2)\n\n\n\n\n\n\n\n\n\nThe graph on the left demonstrates that the variances in mega-watt capacities of the various fuel types are different than one another and leads us to conclude that using a Kruskal-Wallis test would be preferable to that of an Anova test.\nThe graph on the right is depicted to determine whether the data gathered is normally distributed. In this case it is reasonable to conclude that it is not safe to assume normality of the residuals. As such we can conclude that since the assumptions of equal variance and normality are not met for the Anova test is is safer to use the alternative Kruskal-Wallis test for increased accuracy in our conclusions.\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Statistical Analysis",
+      "Consulting Project- Power Plants"
+    ]
+  },
+  {
+    "objectID": "Statistical Analysis/project3.html",
+    "href": "Statistical Analysis/project3.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Statistical Analysis",
+      "Project 3"
+    ]
   },
   {
     "objectID": "Story_Telling/project2.html",
