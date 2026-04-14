@@ -40,6 +40,7 @@ library(margins)
 library(scales)
 library(rio)
 library(plotly)
+library(ggplot2)
 ```
 
 ```{r}
@@ -369,7 +370,7 @@ price_chart_spring <- ggplot(HSL_size_spring,
   facet_wrap(~property_size) + 
   theme_minimal() + 
   labs(
-    y= "Mean Price",
+    y= "Survey Rating",
     x=" ",
     title="Spring Culture Comparison"
   ) + 
@@ -426,7 +427,9 @@ occ_summary <- HSL_data |>
     avg_culture  = mean(Culture, na.rm = TRUE),
     n_properties = n_distinct(Property),
     avg_culture  = mean(Culture, na.rm = TRUE),
-  ) |> 
+    avg_activities = mean(Activities_Events, na.rm = TRUE),
+    avg_management = mean(Management, na.rm = TRUE)
+    ) |> 
   filter(!is.na(Year_Occ_Category)) |> 
   filter(Year_Occ_Category != "Full Spring, Not Winter")
 ```
@@ -473,6 +476,8 @@ make_chart(occ_summary, "avg_bedcount",     "Avg Total Beds")
 make_chart(occ_summary, "avg_maintenance",  "Avg Maintenance Response")
 make_chart(occ_summary, "avg_cleanliness",  "Avg Cleanliness")
 make_chart(occ_summary, "avg_culture",      "Avg Culture")
+make_chart(occ_summary, "avg_activities", "Avg Activities")
+make_chart(occ_summary, "avg_management", "Avg Management")
 ```
 
 ```{r}
@@ -496,18 +501,20 @@ make_chart <- function(data, y_var, y_label) {
 }
 
 # Generate each chart
-make_chart(occ_summary, "avg_occ_rate",    "Avg Occupancy Rate")
-make_chart(occ_summary, "avg_price",        "Avg Contract Price")
-make_chart(occ_summary, "avg_bedcount",     "Avg Total Beds")
-make_chart(occ_summary, "avg_maintenance",  "Avg Maintenance Response")
-make_chart(occ_summary, "avg_cleanliness",  "Avg Cleanliness")
-make_chart(occ_summary, "avg_culture",      "Avg Culture")
+make_chart(occ_summary, "avg_occ_rate",    "Average Occupancy Rate")
+make_chart(occ_summary, "avg_price",        "Average Contract Price")
+make_chart(occ_summary, "avg_bedcount",     "Average Total Beds")
+make_chart(occ_summary, "avg_maintenance",  "Average Maintenance Response")
+make_chart(occ_summary, "avg_cleanliness",  "Average Cleanliness")
+make_chart(occ_summary, "avg_culture",      "Average Culture")
+make_chart(occ_summary, "avg_activities",      "Average Activities")
+make_chart(occ_summary, "avg_management", "Average Management")
 ```
 
 ```{r}
 # List of variables to test
 variables <- c("Occ_Rate", "Mean_Contract_Price", "Total_Beds", 
-               "Maintenance_Response", "Cleanliness", "Culture")
+               "Maintenance_Response", "Cleanliness", "Culture", "Activities_Events", " Management")
 
 # Run ANOVA for each variable
 anova_results <- map(variables, function(var) {

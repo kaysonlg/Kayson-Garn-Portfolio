@@ -1,7 +1,7 @@
 ---
 title: "Consulting Project- Power Plants"
-subtitle: "Course DS 250"
-author: "[STUDENT NAME]"
+subtitle: "Intermediate Statistics Final Consulting Project"
+author: "Kayson Garn"
 format:
   html:
     self-contained: true
