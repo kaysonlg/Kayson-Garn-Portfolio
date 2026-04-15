@@ -12,77 +12,77 @@ BYU-Idaho Student studying Economics, Data Science & Mathematics.
 
 ## Currently
 
-**Housing and Student Living Office\| Lead Office Assistant\| Rexburg,
-Idaho\| April 2024 - Present**
+**Housing and Student Living Office | Lead Office Assistant | Rexburg, Idaho | April 2024 - Present**
 
 Housing department for Brigham Young University of Idaho
 
--Addressed housing needs within the BYU-Idaho student population through
-consistent communication with over 60 different properties -Utilized and
-edited code for analysis of over 890 responses to a survey for students
-living in student approved housing in Visual Code Studio using Python
--Formed part of a hiring board of 3 employees to review over 120
-candidates for open position through series of filtering by resumes,
-cover letters, and interviews -Audited debt owed and paid for an
-apartment complex of over 800 students and system information for over
-30 apartment complexes and properties
+- Analyzed 890+ student housing survey responses using Python in Visual Studio Code, delivering insights on a quarterly basis  
+- Prepared data-driven reports and presentations using R on occupancy, pricing, and bed counts across 89 apartment complexes (2022–2025)  
+- Communicated regularly with 60+ property managers to address student housing needs and maintain accurate housing data  
+- Audited occupancy, pricing, and contact information across multiple properties to ensure data accuracy and operational efficiency  
+
+**Econ Games | Team Analyst | Rexburg, Idaho | January 2026 - April 2026**
+
+- Developed a supply chain model in R that increased projected profits for Brad Hall Fuel from $1,000 to $37,000 per truck annually  
+- Competed in the 2026 Econ Games, analyzing traditional and GPS horse racing data from Equibase within a 24-hour case competition  
+- Presented analytical findings and strategic recommendations as part of a competitive university team  
 
 ### Skills
 
-**Programs**: MS Word, Excel, Python, R & R Markdown, SQL
+**Programs**: Python, R, R Markdown, SQL, Git & GitHub, Excel, Microsoft Office  
 
-**Management**: Conflict Resolution, Analytical Thinking, Financial
-Management, Adaptability, Presentation, Public Speaking,
-Problem-Solving, Project Management, Communication
+**Data & Analytics**: Data Wrangling, Data Visualization, Linear Regression Modeling  
 
-**Languages**: Fluent Portuguese, Conversational Spanish
+**Management**: Analytical Thinking, Financial Management, Adaptability, Project Management, Communication, Public Speaking, Problem-Solving, Conflict Resolution  
+
+**Languages**: Fluent Portuguese, Basic Spanish  
 
 ### Research interests
 
-Energy Markets, Nuclear Energy, Critical Minerals and Natural Resources,
-Housing Markets, Industrial Organization
+Energy Markets, Nuclear Energy, Critical Minerals and Natural Resources,  
+Housing Markets, Industrial Organization  
 
 ## Education
 
-**Bachelor of Science in Economics \| March 2024 - July 2027**
+**Bachelor of Science in Economics | March 2024 - July 2027**
 
-Brigham Young University - Idaho \| 3.99 GPA
+Brigham Young University - Idaho | 3.99 GPA  
 
-Minor: Data Science, Mathematics
+Minor: Data Science, Mathematics  
 
-Micro/Macro Economics, Excel, International Economics, Statistics for
-Economists, International
+Relevant Coursework: Microeconomics, Macroeconomics, Econometrics,  
+Statistics for Economists, Calculus II, Linear Algebra, Data Science  
+Programming, Data Wrangling & Visualization  
 
 ## Leadership Experience and Activities
 
-**Curb Painting Business- Salesman/Curb Painter – Salesman; Idaho Falls,
-Idaho** June 2021 - August 2024
+**Econ Society | Officer | Rexburg, Idaho | August 2025 - Present**
 
--Generated roughly \$1,600 in revenue over course of a summer in
-door-to-door sales in painting curbs in 40 hours of total work time,
-surveyed over 50 neighborhoods
+- Planned weekly meetings with other econ society officers including networking events, projects, and alumni presentations
+- Led a housing market analysis project using data from 5 sources, applying Python and R to clean and analyze data for the BYU-Idaho Housing Office  
 
-**Church of Jesus Christ of Latter Day Saints – Assistant to the
-President; Brazil, Vitoria** June 2022 - March 2024
+**Church of Jesus Christ of Latter-day Saints | Assistant to the President / Financial Secretary | Vitória, Brazil | June 2022 - March 2024**
 
--Led over 110 full-time volunteers in daily service through trainings,
-goal management, and weekly accountability meetings (Assistant to the
-President)
+- Led and trained 110+ volunteers through goal setting, accountability systems, and weekly performance meetings  
+- Managed and audited organizational finances using Excel and Power BI, ensuring alignment with budget goals  
+- Coordinated assignments across 30+ meetings and organized 8 large-scale organizational transfers  
 
--Delegated assignments in over 30 organization-wide meetings and in
-larger gatherings organized 8 organizational transfers by working with
-and delegating tasks to other full-time volunteers
+## Honors
 
--Budgeted, audited, and analyzed mission finances monthly to meet
-organizational goals (Financial Secretary) using Excel, Power BI, and
-through updating monthly expense reports
+- Eagle Scout Award, Greenville, North Carolina (2019)  
+- National Honor Society, West Chicago, Illinois (2020)  
 
 ## Research
 
-https://www.linkedin.com/feed/update/urn:li:activity:7353528492719841280/?originTrackingId=VTRnztPyepetlwBr5bhp5w%3D%3D
+https://www.linkedin.com/feed/update/urn:li:activity:7353528492719841280/
+
+An econometrics research project exploring the relationship between Child Tax Credits and Juvenile Delinquency on the county level across the United States. 
+
+
+
+
 
 ```{=html}
 <!-- ### Footer
 
 Last updated: March 2026 -->
-```

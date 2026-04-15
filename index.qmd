@@ -1,10 +1,23 @@
 ---
-title: "about me"
-subtitle: "my data science portfolio"
+title: "About this Portfolio"
+subtitle: "Kayson Garn"
 # use quarto markdown to 
 ---
 
-# Title 1 Header
-## Title 2 Header
+# What Does This Portfolio Contain
 
-[MarkDown Basics](https://quarto.org/docs/authoring/markdown-basics.html#links-images)
+This portfolio is a representation of academic final projects, research, personal and professional projects and analysis demonstrating skills learned during my time studying Economics, Mathematics, and Data Science. 
+
+It explores topics in: 
+
+Econometrics: 
+  Child Tax Credit and Juvenile Delinquency Relationship
+  
+Statistics: 
+  Kruskal Wallace (Non-parametric anova test): Electricity Generation Capacity by production type
+  
+Economics & Data Science:
+  Student Housing Analysis of Occupancy, Pricing, Bed Count, and Survey Data 
+  Brad Hall Fuel Supply Chain Analysis 
+  Horse Racing Traditional and GPS Data Demand Analysis
+
