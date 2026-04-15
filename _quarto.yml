@@ -106,9 +106,9 @@ website:
     #     - text: "Project 3"
     #       file: Machine_Learning/project3.qmd
     #     - text: "---"
-  #  - title: "Full Stack"
-    #  style: "docked"
-   #   background: light
+    # - title: "Full Stack"
+    #   style: "docked"
+    #   background: light
     #  contents:
     #    - text: "Full Stack"
     #      file: full_stack.qmd
