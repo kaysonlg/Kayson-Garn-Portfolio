@@ -24,7 +24,7 @@ execute:
   warning: false
 ---
 
-# Further Housing Analysis
+# Explorative Housing Analysis
 
 ```{r}
 #| message: false
@@ -42,6 +42,8 @@ library(rio)
 library(plotly)
 library(ggplot2)
 ```
+
+# Exploring Complex Sizes
 
 ```{r}
 #to read in the data
@@ -132,6 +134,8 @@ price_chart <- ggplot(HSL_years_high_occ_grouped,
 ggplotly(price_chart)
 ```
 
+This visual represents the aggregate of all properties sizes grouped by "full" and "non-full" occupancy and split by semester.
+
 ### Price Comparison by Property Size
 
 ```{r}
@@ -178,6 +182,8 @@ price_chart_spring <- ggplot(HSL_size_spring,
 price_chart_spring
 ```
 
+Across all property sizes except for the large apartment complexes, those properties that tend to be full during the Spring semester. The large properties tend to have greater difficulty in filling for the Spring and during 2024 and 2025 had no properties with full occupancy rates. Thus we can observe that for this particular type of property, student's may may be given an incentive to live in larger apartment complexes through a mix of lowering contract prices and increasing property quality through increased investment in maintenance, cleanliness, and management..
+
 ```{r}
 HSL_size_winter <- HSL_data |> 
   filter(!is.na(Cleanliness)) |> 
@@ -221,6 +227,8 @@ price_chart_winter <- ggplot(HSL_size_winter,
 
 price_chart_winter
 ```
+
+In exploring the pricing trends grouped by property size we can observe that while greater demand is introduced into the market the differences in price between those properties that are full and those that are not are mush closer when compared to Spring results.
 
 ### Original Occupancy Comparison
 
@@ -273,6 +281,8 @@ occ_chart_spring <- ggplot(HSL_size_spring,
 occ_chart_spring
 ```
 
+In comparing property sizes in terms of occupancy during the spring we observe that the large apartment complexes tend to have the lowest occupancy rates while the house, small, and medium sized properties tended to be better off.
+
 ```{r, fig.height=10, fig.width=10}
 occ_chart_winter <- ggplot(HSL_size_winter, 
                       aes(x = Year, y = median_occ, color = Full_Occ)) + 
@@ -290,95 +300,6 @@ occ_chart_winter <- ggplot(HSL_size_winter,
   )
 
 occ_chart_winter
-```
-
-### Original Beds Comparison
-
-```{r}
-#| message: false
-#| warning: false
-bedcount_chart <- ggplot(HSL_years_high_occ_grouped, aes(x=Year, y=mean_beds, color= Full_Occ)) + 
-  geom_line(size = 1.2) +
-  geom_point(size = 3) + 
-  facet_wrap(~Semester) +
-  theme_minimal() +
-  scale_color_manual(
-    values = c(
-      "TRUE" = "#006EB6",
-      "FALSE" = "#949598" 
-    )) +
-  theme(
-    strip.text = element_text(face = "bold"),
-    plot.title = element_text(size = 16, face = "bold"),
-    panel.spacing = unit(1.5, "lines")
-  ) + 
-  labs(
-    title = "Student Approved Housing 2022-2025",
-    x = "Year",
-    y = "Mean Total Beds",
-    color = "Full Occupancy"
-  )
-
-ggplotly(bedcount_chart)
-```
-
-### Bed Count Comparison by Property Size
-
-```{r, fig.height=10, fig.width=10}
-bed_chart_spring <- ggplot(HSL_size_spring, 
-                      aes(x = Year, y = mean_beds, color = Full_Occ)) + 
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 3) + 
-  facet_wrap(~property_size) + 
-  theme_minimal() + 
-  labs(
-    y= "Mean Bed Count",
-    x=" ",
-    title="Spring Bed Count Comparison"
-  ) + 
-  theme(
-    legend.position = "bottom"
-  )
-
-bed_chart_spring
-```
-
-```{r, fig.height=10, fig.width=10}
-bed_chart_winter <- ggplot(HSL_size_winter, 
-                      aes(x = Year, y = mean_beds, color = Full_Occ)) + 
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 3) + 
-  facet_wrap(~property_size) + 
-  theme_minimal() + 
-  labs(
-    y= "Mean Bed Count",
-    x=" ",
-    title="Winter Bed Count Comparison"
-  ) + 
-  theme(
-    legend.position = "bottom"
-  )
-
-bed_chart_winter
-```
-
-```{r, fig.height=10, fig.width=10}
-price_chart_spring <- ggplot(HSL_size_spring, 
-                      aes(x = Year, y = mean_culture, color = Full_Occ)) + 
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 3) + 
-  facet_wrap(~property_size) + 
-  theme_minimal() + 
-  labs(
-    y= "Survey Rating",
-    x=" ",
-    title="Spring Culture Comparison"
-  ) + 
-  theme(
-    legend.position = "bottom"
-  )
-
-price_chart_spring
 ```
 
 # Creating the New Variable
@@ -441,7 +362,7 @@ occ_summary <- HSL_data |>
 library(ggplot2)
 library(plotly)
 
-# Define consistent category colors
+#to define consistent category colors
 category_colors <- c(
   "Full Year-Round"        = "#006EB6",
   "Not Full Year-Round"    = "#949598",
@@ -450,7 +371,7 @@ category_colors <- c(
 )
 
 
-# Helper function to keep styling consistent
+#helper function to keep styling consistent
 make_chart <- function(data, y_var, y_label) {
   p <- ggplot(data, aes(x = Year_Occ_Category, y = .data[[y_var]], fill = Year_Occ_Category)) +
     geom_col() +
@@ -477,7 +398,7 @@ make_chart(occ_summary, "avg_maintenance",  "Avg Maintenance Response")
 make_chart(occ_summary, "avg_cleanliness",  "Avg Cleanliness")
 make_chart(occ_summary, "avg_culture",      "Avg Culture")
 make_chart(occ_summary, "avg_activities", "Avg Activities")
-make_chart(occ_summary, "avg_management", "Avg Management")
+
 ```
 
 ```{r}
@@ -534,4 +455,72 @@ anova_results <- map(variables, function(var) {
   )
 
 anova_results
+```
+
+This analysis further supports the idea that the properties that tend to be the most competitive during the spring also tend to earn the highest maintenance, management, and cleanliness survey results from students. Also, those that tend to be competitive during the spring semester also tend to have lower activities and culture survey results than those whom are not competitive.
+
+## Identifying Competitive Year-Round Properties
+
+```{r}
+full_year_round <- HSL_data |> 
+  filter(Year_Occ_Category == "Full Year-Round") |> 
+  select(Property, property_size, Gender) |> 
+  group_by(Property, Gender, property_size) |> 
+  summarise(
+    count_full = count(Property)/2
+  )
+
+pander(table(full_year_round$property_size))
+
+
+```
+
+## Exploring Management Companies
+
+```{r}
+management_summary <- HSL_data |>
+  group_by(Management_Name) |>
+  summarize(
+    avg_occ_rate = mean(Occ_Rate, na.rm = TRUE),
+    avg_price    = mean(Mean_Contract_Price, na.rm = TRUE),
+    avg_bedcount    = mean(Total_Beds, na.rm = TRUE),
+    avg_maintenance  = mean(Maintenance_Response, na.rm = TRUE),
+    avg_cleanliness  = mean(Cleanliness, na.rm = TRUE),
+    avg_culture  = mean(Culture, na.rm = TRUE),
+    n_properties = n_distinct(Property),
+    avg_culture  = mean(Culture, na.rm = TRUE),
+    avg_activities = mean(Activities_Events, na.rm = TRUE),
+    avg_management = mean(Management, na.rm = TRUE)
+    ) 
+```
+
+```{r}
+make_chart <- function(data, y_var, y_label) {
+  p <- ggplot(data, aes(x = Management_Name, y = .data[[y_var]], color = Management_Name, group = 1)) +
+    geom_line(size = 1.2, color = "#DDDDDD") +
+    geom_point(size = 3) +
+    scale_color_manual(values = category_colors) +
+    theme_minimal() +
+    theme(
+      plot.title      = element_text(size = 16, face = "bold"),
+      axis.text.x     = element_text(angle = 20, hjust = 1),
+      legend.position = "none"
+    ) +
+    labs(
+      title = "Student Approved Housing 2022-2025",
+      x     = "Management Company",
+      y     = y_label
+    )
+  ggplotly(p)
+}
+
+# Generate each chart
+make_chart(management_summary, "avg_occ_rate",    "Average Occupancy Rate")
+make_chart(management_summary, "avg_price",        "Average Contract Price")
+make_chart(management_summary, "avg_bedcount",     "Average Total Beds")
+make_chart(management_summary, "avg_maintenance",  "Average Maintenance Response")
+make_chart(management_summary, "avg_cleanliness",  "Average Cleanliness")
+make_chart(management_summary, "avg_culture",      "Average Culture")
+make_chart(management_summary, "avg_activities",      "Average Activities")
+make_chart(management_summary, "avg_management", "Average Management")
 ```

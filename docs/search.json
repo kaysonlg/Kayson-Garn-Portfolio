@@ -339,5 +339,27 @@
       "Story Telling",
       "Student Approved Housing Analysis"
     ]
+  },
+  {
+    "objectID": "Story_Telling/project2.html#identifying-competitive-year-round-properties",
+    "href": "Story_Telling/project2.html#identifying-competitive-year-round-properties",
+    "title": "Client Report - Further Housing Data Analysis",
+    "section": "Identifying Competitive Year-Round Properties",
+    "text": "Identifying Competitive Year-Round Properties\n\n\nShow the code\nfull_year_round &lt;- HSL_data |&gt; \n  filter(Year_Occ_Category == \"Full Year-Round\") |&gt; \n  select(Property, property_size, Gender) |&gt; \n  group_by(Property, Gender, property_size) |&gt; \n  summarise(\n    count_full = count(Property)/2\n  )\n\npander(table(full_year_round$property_size))\n\n\n\n\n\n\n\n\n\n\n\nHouse\nLarge\nMedium\nSmall\n\n\n\n\n6\n5\n7\n13",
+    "crumbs": [
+      "Story Telling",
+      "Owner Housing Analysis"
+    ]
+  },
+  {
+    "objectID": "Story_Telling/project2.html#exploring-management-companies",
+    "href": "Story_Telling/project2.html#exploring-management-companies",
+    "title": "Client Report - Further Housing Data Analysis",
+    "section": "Exploring Management Companies",
+    "text": "Exploring Management Companies\n\n\nShow the code\nmanagement_summary &lt;- HSL_data |&gt;\n  group_by(Management_Name) |&gt;\n  summarize(\n    avg_occ_rate = mean(Occ_Rate, na.rm = TRUE),\n    avg_price    = mean(Mean_Contract_Price, na.rm = TRUE),\n    avg_bedcount    = mean(Total_Beds, na.rm = TRUE),\n    avg_maintenance  = mean(Maintenance_Response, na.rm = TRUE),\n    avg_cleanliness  = mean(Cleanliness, na.rm = TRUE),\n    avg_culture  = mean(Culture, na.rm = TRUE),\n    n_properties = n_distinct(Property),\n    avg_culture  = mean(Culture, na.rm = TRUE),\n    avg_activities = mean(Activities_Events, na.rm = TRUE),\n    avg_management = mean(Management, na.rm = TRUE)\n    ) \n\n\n\n\nShow the code\nmake_chart &lt;- function(data, y_var, y_label) {\n  p &lt;- ggplot(data, aes(x = Management_Name, y = .data[[y_var]], color = Management_Name, group = 1)) +\n    geom_line(size = 1.2, color = \"#DDDDDD\") +\n    geom_point(size = 3) +\n    scale_color_manual(values = category_colors) +\n    theme_minimal() +\n    theme(\n      plot.title      = element_text(size = 16, face = \"bold\"),\n      axis.text.x     = element_text(angle = 20, hjust = 1),\n      legend.position = \"none\"\n    ) +\n    labs(\n      title = \"Student Approved Housing 2022-2025\",\n      x     = \"Management Company\",\n      y     = y_label\n    )\n  ggplotly(p)\n}\n\n# Generate each chart\nmake_chart(management_summary, \"avg_occ_rate\",    \"Average Occupancy Rate\")\n\n\n\n\n\n\nShow the code\nmake_chart(management_summary, \"avg_price\",        \"Average Contract Price\")\n\n\n\n\n\n\nShow the code\nmake_chart(management_summary, \"avg_bedcount\",     \"Average Total Beds\")\n\n\n\n\n\n\nShow the code\nmake_chart(management_summary, \"avg_maintenance\",  \"Average Maintenance Response\")\n\n\n\n\n\n\nShow the code\nmake_chart(management_summary, \"avg_cleanliness\",  \"Average Cleanliness\")\n\n\n\n\n\n\nShow the code\nmake_chart(management_summary, \"avg_culture\",      \"Average Culture\")\n\n\n\n\n\n\nShow the code\nmake_chart(management_summary, \"avg_activities\",      \"Average Activities\")\n\n\n\n\n\n\nShow the code\nmake_chart(management_summary, \"avg_management\", \"Average Management\")",
+    "crumbs": [
+      "Story Telling",
+      "Owner Housing Analysis"
+    ]
   }
 ]
