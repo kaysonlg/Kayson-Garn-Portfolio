@@ -78,8 +78,8 @@ website:
       style: "docked"
       background: light
       contents:
-        - text: "Story Telling"
-          file: story_telling.qmd
+        #- text: "Story Telling"
+        #  file: story_telling.qmd
         - text: "---"
         - text: "Student Approved Housing Analysis"
           file: Story_Telling/w09_task1.qmd
