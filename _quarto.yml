@@ -61,8 +61,10 @@ website:
     - title: "Statistical Analysis"
       style: "docked"
       background: light
-      href: "stat_analysis.qmd"
       contents:
+        - text: "Statistical Analysis"
+          href: "stat_analysis.qmd"
+        - text: "---"
         - text: "Consulting Project- Power Plants"
           file: "Statistical Analysis/project1.qmd"
         - text: "---"
@@ -75,8 +77,10 @@ website:
     - title: "Story Telling"
       style: "docked"
       background: light
-      href: "story_telling.qmd"
       contents:
+        - text: "Story Telling"
+          href: "story_telling.qmd"
+        - text: "---"
         - text: "Student Approved Housing Analysis"
           file: Story_Telling/w09_task1.qmd
         - text: "---"
@@ -135,13 +139,12 @@ website:
   
 format:  
   html:
-    theme: #see this link to customize the theme with css (https://quarto.org/docs/output-formats/html-themes.html#dark-mode)
-      light: flatly # more themes can be found [here](https://quarto.org/docs/output-formats/html-themes.html)
+    theme:
+      light: flatly
       dark: darkly
       #light: cosmo
       #dark: [cosmo, theme-dark.scss]
     css: styles.css
     toc: true
-
 
 
